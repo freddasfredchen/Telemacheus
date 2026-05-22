@@ -37,7 +37,7 @@ function scheduleHatch() {
   clearTimeout(hatchTimer);
   hatchTimer = setTimeout(() => {
     const egg = $('egg');
-    ['c1', 'c2', 'c3'].forEach(c => {
+    ['c1','c2','c3'].forEach(c => {
       const el = document.createElement('div');
       el.className = `egg-crack ${c}`;
       egg.appendChild(el);

@@ -9,27 +9,27 @@ function feedAction(type) {
   saveState();
   updateBars();
 
-  const btn = $('btn' + type[0].toUpperCase() + type.slice(1));
+  const btnId = 'btn' + type[0].toUpperCase() + type.slice(1);
+  const btn = $(btnId);
   btn.classList.add('pressed');
   setTimeout(() => btn.classList.remove('pressed'), 200);
 
-  const reactions = {
+  const r = {
     water:    { msg: 'Ahhh! Erfrischend! Danke Lea! 💧😊', emoji: '💧', toast: 'Wasser gegeben! 💧' },
     food:     { msg: 'Nom nom nom! SO GUT! 🥗😋',           emoji: '🥗', toast: 'Gefüttert! 🥗' },
     exercise: { msg: 'JA! Sport! Ich liebe Sport! 🏃💪',    emoji: '🏃', toast: 'Sport gemacht! 🏃' }
-  };
-  const r = reactions[type];
+  }[type];
   showSpeech(r.msg);
   showToast(r.toast);
   spawnFloatEmoji(r.emoji, btn);
 
   if (type === 'exercise') {
-    brunoEl.classList.remove('happy', 'neutral', 'sad');
+    brunoEl.classList.remove('happy','neutral','sad');
     brunoEl.classList.add('exercise');
     clearTimeout(exerciseAnimTimeout);
     exerciseAnimTimeout = setTimeout(() => { brunoEl.classList.remove('exercise'); updatePetState(); }, 2000);
   } else {
-    brunoEl.classList.remove('happy', 'neutral', 'sad', 'exercise');
+    brunoEl.classList.remove('happy','neutral','sad','exercise');
     brunoEl.classList.add('happy');
     clearTimeout(exerciseAnimTimeout);
     exerciseAnimTimeout = setTimeout(() => { brunoEl.classList.remove('happy'); updatePetState(); }, 1500);
