@@ -1,0 +1,10 @@
+{
+  "name": "Bruno – Brunos Wellness-Wächter",
+  "short_name": "Bruno",
+  "description": "Dein kleines virtuelles Haustier, das dich (mit Witz) daran erinnert, Wasser zu trinken, zu essen und dich zu bewegen.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a0a2e",
+  "theme_color": "#ff6eb4",
+  "icons": []
+}
