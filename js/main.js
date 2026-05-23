@@ -19,6 +19,7 @@ function feedAction(type) {
   state[type] = Math.min(100, state[type] + REFILL_AMOUNT);
   saveState();
   updateBars();
+  awardAction(type);
 
   const btnId = 'btn' + type[0].toUpperCase() + type.slice(1);
   const btn = $(btnId);
@@ -112,6 +113,7 @@ function tick() {
 
 function init() {
   const offlineMs = Date.now() - (state.lastTick || Date.now());
+  recordDailyScore();
   applyOfflineDecay();
 
   currentPhase = getTimePhase();

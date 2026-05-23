@@ -1,5 +1,6 @@
 const $ = id => document.getElementById(id);
 const brunoEl = $('bruno');
+const brunoWrap = $('brunoWrap');
 
 function updateBars() {
   STAT_NAMES.forEach(stat => {
@@ -63,6 +64,12 @@ function updatePetState() {
     $('moodLabel').style.color = dots >= 4 ? 'var(--green)' : dots <= 2 ? 'var(--red)' : 'var(--accent3)';
   }
   $('genInfo').textContent = `Generation ${state.generation} · ${formatAge(state.age)}`;
+
+  // Apply stage class to brunoWrap
+  if (brunoWrap) {
+    for (let i = 1; i <= 5; i++) brunoWrap.classList.remove('stage-' + i);
+    brunoWrap.classList.add('stage-' + (state.stage || 1));
+  }
 }
 
 function formatAge(m) {

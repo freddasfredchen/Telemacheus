@@ -26,24 +26,34 @@
       Hallo Lea! Ich freu mich auf unsere Zeit zusammen! 🎉
     </div>
 
-    <div class="bruno happy" id="bruno">
-      <div class="head">
-        <div class="ear left"></div>
-        <div class="ear right"></div>
-        <div class="eye left"></div>
-        <div class="eye right"></div>
-        <div class="cheek left"></div>
-        <div class="cheek right"></div>
-        <div class="nose"></div>
-        <div class="mouth"></div>
+    <div class="bruno-wrap" id="brunoWrap">
+      <div class="bruno happy" id="bruno">
+        <div class="head">
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="cheek left"></div>
+          <div class="cheek right"></div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+          <!-- accessories inside head -->
+          <div class="bruno-acc" data-acc="hat">🎩</div>
+          <div class="bruno-acc" data-acc="crown">👑</div>
+          <div class="bruno-acc" data-acc="sunglasses">😎</div>
+          <div class="bruno-acc" data-acc="flower">🌸</div>
+        </div>
+        <div class="body">
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+          <div class="tail"></div>
+          <!-- accessories inside body -->
+          <div class="bruno-acc" data-acc="lightning">⚡</div>
+          <div class="bruno-acc" data-acc="butterfly">🦋</div>
+        </div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
       </div>
-      <div class="body">
-        <div class="arm left"></div>
-        <div class="arm right"></div>
-        <div class="tail"></div>
-      </div>
-      <div class="leg left"></div>
-      <div class="leg right"></div>
     </div>
 
     <div class="egg-wrap" id="eggWrap">
@@ -53,6 +63,20 @@
 
     <div class="sparkles" id="sparkles"></div>
     <div class="stage-flash" id="stageFlash"></div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-row">
+      <span class="stage-label" id="stageLabel">Baby 🐣</span>
+      <div class="xp-bar-bg">
+        <div class="xp-bar" id="xpBar" style="width:0%"></div>
+      </div>
+      <span class="coins-display" id="coinsDisplay">💰 0</span>
+    </div>
+    <div class="progress-row progress-row--sub">
+      <span class="streak-display" id="streakDisplay"></span>
+      <button class="shop-open-btn" onclick="openShop()">🛍️ Shop</button>
+    </div>
   </div>
 
   <div class="mood-bar">
@@ -124,6 +148,11 @@
   </div>
 
   <div class="status-msg" id="statusMsg">Alles gut! Lea kümmert sich um sich selbst. 💜</div>
+
+  <div class="calendar-section">
+    <div class="calendar-label">Letzte 14 Tage</div>
+    <div class="calendar-dots" id="calendarDots"></div>
+  </div>
 </div>
 
 <footer>
@@ -131,11 +160,23 @@
   <span class="gen-info" id="genInfo">Generation 1</span>
 </footer>
 
+<div class="shop-modal" id="shopModal">
+  <div class="shop-modal-inner">
+    <div class="shop-header">
+      🛍️ Brunos Boutique
+      <button class="shop-close-btn" onclick="closeShop()">✕</button>
+    </div>
+    <div class="shop-coins-bar" id="shopCoinsBar">💰 0 Coins</div>
+    <div class="shop-list" id="shopList"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="js/config.js"></script>
 <script src="js/state.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/progress.js"></script>
 <script src="js/phoenix.js"></script>
 <script src="js/main.js"></script>
 </body>

@@ -1,9 +1,27 @@
 const STAT_NAMES = ['water', 'food', 'exercise', 'energy', 'social', 'hygiene'];
 
+const XP_PER_ACTION   = { water: 8, food: 10, exercise: 15, social: 8, hygiene: 8 };
+const COIN_PER_ACTION = { water: 5, food:  6, exercise: 10, social: 5, hygiene: 5 };
+const GOOD_DAY_THRESHOLD   = 65; // avg% to count as a good day
+const GOOD_DAY_BONUS_COINS = 20;
+const STAGE_THRESHOLDS = [0, 150, 400, 800, 1500]; // XP for stages 1–5
+const STAGE_NAMES = ['Baby 🐣', 'Teen 🐾', 'Erwachsen 💪', 'Fit ⚡', 'Legende 👑'];
+const SHOP_ITEMS = [
+  { id: 'hat',        name: '🎩 Schicker Hut',    cost: 50,  desc: 'Für das gewisse Etwas' },
+  { id: 'sunglasses', name: '😎 Sonnenbrille',     cost: 75,  desc: 'Cool bleiben' },
+  { id: 'flower',     name: '🌸 Blume',            cost: 30,  desc: 'Immer Frühling' },
+  { id: 'lightning',  name: '⚡ Energie-Aura',     cost: 100, desc: 'Für echte Power-Leas' },
+  { id: 'butterfly',  name: '🦋 Schmetterling',    cost: 80,  desc: 'Leicht und frei' },
+  { id: 'crown',      name: '👑 Krone',            cost: 200, desc: 'Nur für Legenden' }
+];
+
 const DEFAULTS = {
   water: 100, food: 100, exercise: 100,
   energy: 100, social: 80, hygiene: 100,
-  age: 0, generation: 1, isEgg: false
+  age: 0, generation: 1, isEgg: false,
+  xp: 0, coins: 0, stage: 1, goodDayStreak: 0,
+  lastDayRecorded: null, dailyHistory: [],
+  ownedItems: [], equippedItems: []
 };
 
 const DECAY_RATE = {
