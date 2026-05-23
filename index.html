@@ -4,637 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bruno – Leas virtuelles Haustier 🐾</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff6eb4">
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bruno">
+  <link rel="apple-touch-icon" href="./icons/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #1a0a2e;
-      --panel:     #2d1b4e;
-      --panel2:    #3d2560;
-      --accent1:   #ff6ec7;
-      --accent2:   #7ef9ff;
-      --accent3:   #ffe66d;
-      --green:     #39ff14;
-      --red:       #ff3860;
-      --pixel:     'Press Start 2P', monospace;
-      --radius:    12px;
-    }
-
-    body {
-      background: var(--bg);
-      font-family: var(--pixel);
-      color: #e0d0ff;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 12px 8px 32px;
-      overflow-x: hidden;
-      /* animated starfield via gradient */
-      background-image:
-        radial-gradient(1px 1px at 10% 20%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 30% 70%, #ddd 0%, transparent 100%),
-        radial-gradient(1px 1px at 50% 10%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 70% 55%, #ccc 0%, transparent 100%),
-        radial-gradient(1px 1px at 80% 30%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 15% 85%, #ddd 0%, transparent 100%),
-        radial-gradient(1px 1px at 90% 80%, #fff 0%, transparent 100%),
-        radial-gradient(2px 2px at 60% 40%, rgba(126,249,255,0.4) 0%, transparent 100%),
-        radial-gradient(2px 2px at 25% 50%, rgba(255,110,199,0.3) 0%, transparent 100%);
-      background-color: var(--bg);
-    }
-
-    /* ── Header ── */
-    header {
-      text-align: center;
-      margin-bottom: 14px;
-    }
-    header h1 {
-      font-size: clamp(0.7rem, 3.5vw, 1rem);
-      color: var(--accent3);
-      text-shadow: 0 0 8px var(--accent3);
-      letter-spacing: 2px;
-    }
-    header p.subtitle {
-      font-size: clamp(0.45rem, 2vw, 0.6rem);
-      color: var(--accent2);
-      margin-top: 4px;
-      opacity: 0.8;
-    }
-
-    /* ── Main Card ── */
-    .card {
-      background: var(--panel);
-      border: 3px solid var(--accent1);
-      border-radius: var(--radius);
-      box-shadow: 0 0 24px rgba(255,110,199,0.4), inset 0 0 12px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 420px;
-      padding: 16px;
-    }
-
-    /* ── Pet Stage ── */
-    .pet-stage {
-      position: relative;
-      background: linear-gradient(180deg, #0d0522 0%, #1a0a2e 60%, #2a103c 100%);
-      border: 2px solid var(--panel2);
-      border-radius: 10px;
-      height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      overflow: hidden;
-      margin-bottom: 14px;
-    }
-
-    /* pixel floor */
-    .pet-stage::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 28px;
-      background: repeating-linear-gradient(
-        90deg,
-        #3d2560 0px, #3d2560 8px,
-        #4a2d72 8px, #4a2d72 16px
-      );
-      border-top: 3px solid var(--accent1);
-    }
-
-    /* ── Bruno the Pet (pure CSS) ── */
-    .bruno {
-      position: relative;
-      width: 80px;
-      height: 90px;
-      margin-bottom: 30px;
-      z-index: 2;
-      transition: filter 0.4s;
-      image-rendering: pixelated;
-    }
-
-    /* Body */
-    .bruno .body {
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 56px; height: 52px;
-      background: var(--accent2);
-      border-radius: 40% 40% 30% 30% / 50% 50% 40% 40%;
-      border: 3px solid #1a8a99;
-      box-shadow: inset -6px -6px 0 rgba(0,0,0,0.15);
-    }
-
-    /* Legs */
-    .bruno .leg {
-      position: absolute;
-      bottom: -10px;
-      width: 14px; height: 18px;
-      background: var(--accent2);
-      border: 3px solid #1a8a99;
-      border-radius: 4px 4px 8px 8px;
-    }
-    .bruno .leg.left  { left:  10px; transform-origin: top center; }
-    .bruno .leg.right { right: 10px; transform-origin: top center; }
-
-    /* Arms */
-    .bruno .arm {
-      position: absolute;
-      bottom: 20px;
-      width: 12px; height: 26px;
-      background: var(--accent2);
-      border: 3px solid #1a8a99;
-      border-radius: 6px;
-      transform-origin: top center;
-    }
-    .bruno .arm.left  { left:  -6px; transform: rotate(20deg); }
-    .bruno .arm.right { right: -6px; transform: rotate(-20deg); }
-
-    /* Head */
-    .bruno .head {
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 62px; height: 58px;
-      background: var(--accent2);
-      border-radius: 50% 50% 44% 44% / 54% 54% 46% 46%;
-      border: 3px solid #1a8a99;
-      box-shadow: inset -6px -6px 0 rgba(0,0,0,0.1);
-    }
-
-    /* Ears */
-    .bruno .ear {
-      position: absolute;
-      top: -10px;
-      width: 16px; height: 20px;
-      background: var(--accent2);
-      border: 3px solid #1a8a99;
-      border-radius: 50% 50% 0 0;
-    }
-    .bruno .ear.left  { left:  6px; }
-    .bruno .ear.right { right: 6px; }
-    .bruno .ear::after {
-      content: '';
-      position: absolute;
-      top: 4px; left: 50%;
-      transform: translateX(-50%);
-      width: 6px; height: 10px;
-      background: var(--accent1);
-      border-radius: 50% 50% 0 0;
-      opacity: 0.6;
-    }
-
-    /* Eyes */
-    .bruno .eye {
-      position: absolute;
-      top: 18px;
-      width: 12px; height: 14px;
-      background: #1a0a2e;
-      border-radius: 50%;
-      border: 2px solid #fff;
-    }
-    .bruno .eye.left  { left:  10px; }
-    .bruno .eye.right { right: 10px; }
-    .bruno .eye::after {
-      content: '';
-      position: absolute;
-      top: 2px; left: 2px;
-      width: 5px; height: 5px;
-      background: #fff;
-      border-radius: 50%;
-    }
-
-    /* Nose */
-    .bruno .nose {
-      position: absolute;
-      top: 34px; left: 50%;
-      transform: translateX(-50%);
-      width: 8px; height: 5px;
-      background: var(--accent1);
-      border-radius: 50%;
-      border: 1px solid #c05090;
-    }
-
-    /* Mouth – default happy */
-    .bruno .mouth {
-      position: absolute;
-      bottom: 10px; left: 50%;
-      transform: translateX(-50%);
-      width: 22px; height: 12px;
-      border: 3px solid #1a0a2e;
-      border-top: none;
-      border-radius: 0 0 14px 14px;
-      background: transparent;
-    }
-
-    /* Cheeks */
-    .bruno .cheek {
-      position: absolute;
-      top: 30px;
-      width: 12px; height: 8px;
-      background: rgba(255,110,199,0.45);
-      border-radius: 50%;
-    }
-    .bruno .cheek.left  { left: 4px;  }
-    .bruno .cheek.right { right: 4px; }
-
-    /* Tail */
-    .bruno .tail {
-      position: absolute;
-      bottom: 10px; right: -14px;
-      width: 18px; height: 12px;
-      background: var(--accent2);
-      border: 3px solid #1a8a99;
-      border-radius: 0 50% 50% 0;
-      transform-origin: left center;
-    }
-
-    /* ── State: Neutral ── */
-    .bruno.neutral .mouth {
-      width: 18px; height: 4px;
-      border-radius: 4px;
-      border: 3px solid #1a0a2e;
-      border-top: 3px solid #1a0a2e;
-      background: transparent;
-    }
-
-    /* ── State: Sad ── */
-    .bruno.sad .mouth {
-      border: 3px solid #1a0a2e;
-      border-bottom: none;
-      border-top: none;
-      border-radius: 14px 14px 0 0;
-      bottom: 8px;
-      height: 10px;
-      width: 22px;
-    }
-    .bruno.sad .eye {
-      height: 10px;
-    }
-    .bruno.sad .cheek { opacity: 0; }
-
-    /* ── State: Dead ── */
-    .bruno.dead .eye {
-      background: none;
-      border: none;
-    }
-    .bruno.dead .eye::before {
-      content: '✕';
-      position: absolute;
-      top: -3px; left: 0;
-      font-size: 12px;
-      font-family: sans-serif;
-      color: var(--red);
-    }
-    .bruno.dead .eye::after { display: none; }
-    .bruno.dead .mouth {
-      width: 18px; height: 4px;
-      border: 3px solid #1a0a2e;
-      border-top: 3px solid #1a0a2e;
-      border-radius: 4px;
-    }
-    .bruno.dead { filter: grayscale(90%) brightness(0.6); }
-
-    /* ── Animations ── */
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-12px); }
-    }
-    @keyframes wiggle {
-      0%,100% { transform: rotate(0deg); }
-      25%      { transform: rotate(-6deg); }
-      75%      { transform: rotate(6deg); }
-    }
-    @keyframes tailWag {
-      0%,100% { transform: rotate(0deg); }
-      50%      { transform: rotate(30deg); }
-    }
-    @keyframes sadDroop {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(3px); }
-    }
-    @keyframes legWalk {
-      0%,100% { transform: rotate(0deg); }
-      50%      { transform: rotate(20deg); }
-    }
-    @keyframes armRaise {
-      0%,100% { transform: rotate(20deg); }
-      50%      { transform: rotate(-30deg); }
-    }
-    @keyframes armRaiseR {
-      0%,100% { transform: rotate(-20deg); }
-      50%      { transform: rotate(30deg); }
-    }
-    @keyframes blinkEye {
-      0%,90%,100% { transform: scaleY(1); }
-      95%          { transform: scaleY(0.1); }
-    }
-    @keyframes heartbeat {
-      0%,100% { transform: scale(1); }
-      50%      { transform: scale(1.05); }
-    }
-    @keyframes shakeHead {
-      0%,100% { transform: translateX(-50%) rotate(0deg); }
-      20%      { transform: translateX(-50%) rotate(-8deg); }
-      40%      { transform: translateX(-50%) rotate(8deg); }
-      60%      { transform: translateX(-50%) rotate(-6deg); }
-      80%      { transform: translateX(-50%) rotate(6deg); }
-    }
-    @keyframes exerciseJump {
-      0%,100% { transform: translateY(0) scaleX(1); }
-      30%      { transform: translateY(-20px) scaleX(0.9); }
-      60%      { transform: translateY(-8px) scaleX(1.1); }
-    }
-    @keyframes float {
-      0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-5px); }
-    }
-    @keyframes sparkle {
-      0%   { opacity: 0; transform: scale(0) rotate(0deg); }
-      50%  { opacity: 1; transform: scale(1.2) rotate(180deg); }
-      100% { opacity: 0; transform: scale(0) rotate(360deg); }
-    }
-    @keyframes bubblePop {
-      0%   { transform: scale(0) translateY(0); opacity: 1; }
-      70%  { transform: scale(1) translateY(-20px); opacity: 1; }
-      100% { transform: scale(0.8) translateY(-30px); opacity: 0; }
-    }
-    @keyframes scanline {
-      0%   { transform: translateY(-100%); }
-      100% { transform: translateY(200%); }
-    }
-
-    /* Happy state animations */
-    .bruno.happy { animation: bounce 0.7s ease-in-out infinite; }
-    .bruno.happy .tail { animation: tailWag 0.3s ease-in-out infinite; }
-    .bruno.happy .eye  { animation: blinkEye 3s ease-in-out infinite; }
-    .bruno.happy .arm.left  { animation: armRaise  0.7s ease-in-out infinite; }
-    .bruno.happy .arm.right { animation: armRaiseR 0.7s ease-in-out infinite; }
-
-    /* Neutral */
-    .bruno.neutral { animation: float 2.5s ease-in-out infinite; }
-    .bruno.neutral .tail { animation: tailWag 1s ease-in-out infinite; }
-    .bruno.neutral .eye  { animation: blinkEye 4s ease-in-out infinite; }
-
-    /* Sad */
-    .bruno.sad { animation: sadDroop 2s ease-in-out infinite; }
-    .bruno.sad .tail { animation: none; transform: rotate(-20deg); }
-
-    /* Dead */
-    .bruno.dead { animation: none; }
-
-    /* Exercise state */
-    .bruno.exercise { animation: exerciseJump 0.5s ease-in-out infinite; }
-    .bruno.exercise .leg.left  { animation: legWalk 0.25s ease-in-out infinite; }
-    .bruno.exercise .leg.right { animation: legWalk 0.25s ease-in-out infinite reverse; }
-
-    /* ── Sparkles ── */
-    .sparkles {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      z-index: 3;
-    }
-    .sparkle {
-      position: absolute;
-      font-size: 14px;
-      animation: sparkle 0.8s ease-out forwards;
-    }
-
-    /* ── Speech Bubble ── */
-    .speech-bubble {
-      position: absolute;
-      top: 12px; left: 8px; right: 8px;
-      background: var(--panel2);
-      border: 2px solid var(--accent3);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: clamp(0.35rem, 1.8vw, 0.48rem);
-      color: var(--accent3);
-      line-height: 1.6;
-      text-align: center;
-      z-index: 5;
-      box-shadow: 0 0 10px rgba(255,230,109,0.3);
-      min-height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.4s;
-    }
-    .speech-bubble::after {
-      content: '';
-      position: absolute;
-      bottom: -10px; left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--accent3);
-    }
-
-    /* ── Stats ── */
-    .stats { margin-bottom: 14px; }
-    .stat-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .stat-label {
-      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
-      width: 100px;
-      flex-shrink: 0;
-      color: #d0c0ff;
-    }
-    .stat-bar-bg {
-      flex: 1;
-      height: 18px;
-      background: #0d0522;
-      border: 2px solid var(--panel2);
-      border-radius: 6px;
-      overflow: hidden;
-      position: relative;
-    }
-    .stat-bar {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.6s ease, background-color 0.4s;
-    }
-    .stat-bar.water    { background: linear-gradient(90deg, #1a8aff, var(--accent2)); }
-    .stat-bar.food     { background: linear-gradient(90deg, #39ff14, #9cff14); }
-    .stat-bar.exercise { background: linear-gradient(90deg, #ff6ec7, #ff9a3c); }
-
-    .stat-bar.low   { background: linear-gradient(90deg, #ff8c00, var(--accent3)) !important; }
-    .stat-bar.crit  { background: linear-gradient(90deg, var(--red), #ff6060)  !important; }
-
-    .stat-val {
-      font-size: clamp(0.42rem, 1.8vw, 0.55rem);
-      width: 36px;
-      text-align: right;
-      color: var(--accent2);
-    }
-
-    /* ── Buttons ── */
-    .buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .btn {
-      position: relative;
-      background: var(--panel2);
-      border: 3px solid var(--accent1);
-      color: #fff;
-      font-family: var(--pixel);
-      font-size: clamp(0.4rem, 1.8vw, 0.55rem);
-      padding: 10px 4px 8px;
-      border-radius: 10px;
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.15s, transform 0.1s, box-shadow 0.1s;
-      box-shadow: 0 4px 0 #8c2a7a, 0 0 8px rgba(255,110,199,0.2);
-      line-height: 1.5;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-    .btn:active, .btn.pressed {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #8c2a7a;
-    }
-    .btn:hover { background: #4a2d72; }
-    .btn .btn-icon { font-size: 1.4rem; display: block; margin-bottom: 2px; }
-    .btn.water-btn    { border-color: var(--accent2); box-shadow: 0 4px 0 #0a5566, 0 0 8px rgba(126,249,255,0.2); }
-    .btn.food-btn     { border-color: var(--green);   box-shadow: 0 4px 0 #1a6600, 0 0 8px rgba(57,255,20,0.2); }
-    .btn.exercise-btn { border-color: var(--accent3); box-shadow: 0 4px 0 #886600, 0 0 8px rgba(255,230,109,0.2); }
-
-    /* ── Status Message ── */
-    .status-msg {
-      background: var(--panel2);
-      border: 2px solid var(--panel2);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: clamp(0.38rem, 1.7vw, 0.5rem);
-      color: #b090f0;
-      line-height: 1.8;
-      text-align: center;
-      min-height: 38px;
-      transition: color 0.3s;
-    }
-
-    /* ── Mood Indicator ── */
-    .mood-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-    .mood-dot {
-      width: 12px; height: 12px;
-      border-radius: 3px;
-      background: var(--panel2);
-      transition: background 0.4s;
-    }
-    .mood-dot.active { background: var(--accent1); box-shadow: 0 0 6px var(--accent1); }
-    .mood-label {
-      font-size: clamp(0.38rem, 1.6vw, 0.5rem);
-      color: var(--accent1);
-    }
-
-    /* ── Scanline overlay ── */
-    .scanline {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(0,0,0,0.08) 3px,
-        rgba(0,0,0,0.08) 4px
-      );
-      pointer-events: none;
-      z-index: 999;
-    }
-
-    /* ── Footer ── */
-    footer {
-      margin-top: 14px;
-      font-size: clamp(0.32rem, 1.4vw, 0.42rem);
-      color: #5a3a7a;
-      text-align: center;
-      line-height: 2;
-    }
-
-    /* ── Notification toast ── */
-    .toast {
-      position: fixed;
-      bottom: 20px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--panel2);
-      border: 2px solid var(--accent1);
-      border-radius: 10px;
-      padding: 8px 16px;
-      font-size: clamp(0.38rem, 1.6vw, 0.5rem);
-      color: var(--accent3);
-      z-index: 9999;
-      transition: transform 0.35s cubic-bezier(.22,1.5,.5,1), opacity 0.35s;
-      opacity: 0;
-      text-align: center;
-      max-width: 90vw;
-      pointer-events: none;
-    }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    /* ── Floating emoji pop ── */
-    .float-pop {
-      position: fixed;
-      font-size: 2rem;
-      pointer-events: none;
-      z-index: 9998;
-      animation: bubblePop 1s ease-out forwards;
-    }
-
-    /* ── Dead overlay ── */
-    .dead-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      border-radius: 10px;
-    }
-    .dead-overlay.show { display: flex; }
-    .dead-text {
-      font-size: clamp(0.5rem, 2.5vw, 0.7rem);
-      color: var(--red);
-      text-align: center;
-      line-height: 2.2;
-      text-shadow: 0 0 12px var(--red);
-    }
-    .revive-btn {
-      display: block;
-      margin: 10px auto 0;
-      background: var(--red);
-      color: #fff;
-      border: 3px solid #ff6060;
-      font-family: var(--pixel);
-      font-size: clamp(0.4rem, 1.8vw, 0.55rem);
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #880000;
-      transition: transform 0.1s;
-    }
-    .revive-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #880000; }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -642,55 +22,68 @@
 
 <header>
   <h1>🐾 BRUNO 🐾</h1>
-  <p class="subtitle">Leas virtuelles Haustier · Pixel Edition</p>
+  <p class="subtitle">Leas Wellness-Buddy · Pixel Edition</p>
 </header>
 
 <div class="card">
-
-  <!-- Pet Stage -->
   <div class="pet-stage" id="petStage">
-
     <div class="speech-bubble" id="speechBubble">
       Hallo Lea! Ich freu mich auf unsere Zeit zusammen! 🎉
     </div>
 
-    <!-- Bruno -->
-    <div class="bruno happy" id="bruno">
-      <div class="head">
-        <div class="ear left"></div>
-        <div class="ear right"></div>
-        <div class="eye left"></div>
-        <div class="eye right"></div>
-        <div class="cheek left"></div>
-        <div class="cheek right"></div>
-        <div class="nose"></div>
-        <div class="mouth"></div>
+    <div class="bruno-wrap" id="brunoWrap">
+      <div class="bruno happy" id="bruno">
+        <div class="head">
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="cheek left"></div>
+          <div class="cheek right"></div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+          <!-- accessories inside head -->
+          <div class="bruno-acc" data-acc="hat">🎩</div>
+          <div class="bruno-acc" data-acc="crown">👑</div>
+          <div class="bruno-acc" data-acc="sunglasses">😎</div>
+          <div class="bruno-acc" data-acc="flower">🌸</div>
+        </div>
+        <div class="body">
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+          <div class="tail"></div>
+          <!-- accessories inside body -->
+          <div class="bruno-acc" data-acc="lightning">⚡</div>
+          <div class="bruno-acc" data-acc="butterfly">🦋</div>
+        </div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
       </div>
-      <div class="body">
-        <div class="arm left"></div>
-        <div class="arm right"></div>
-        <div class="tail"></div>
-      </div>
-      <div class="leg left"></div>
-      <div class="leg right"></div>
+    </div>
+
+    <div class="egg-wrap" id="eggWrap">
+      <div class="egg" id="egg"></div>
+      <div class="egg-label" id="eggLabel">🔥 schlüpft bald... 🔥</div>
     </div>
 
     <div class="sparkles" id="sparkles"></div>
-
-    <!-- Dead overlay -->
-    <div class="dead-overlay" id="deadOverlay">
-      <div>
-        <div class="dead-text">
-          💀 BRUNO IST GESTORBEN 💀<br/>
-          <span style="font-size:0.8em; color:#ff8888;">Du hast ihn verhungern lassen.<br/>Lea, du Ungeheuer.</span>
-        </div>
-        <button class="revive-btn" onclick="reviveBruno()">😇 Bruno wiederbeleben</button>
-      </div>
-    </div>
-
+    <div class="stage-flash" id="stageFlash"></div>
   </div>
 
-  <!-- Mood dots -->
+  <div class="progress-section">
+    <div class="progress-row">
+      <span class="stage-label" id="stageLabel">Baby 🐣</span>
+      <div class="xp-bar-bg">
+        <div class="xp-bar" id="xpBar" style="width:0%"></div>
+      </div>
+      <span class="coins-display" id="coinsDisplay">💰 0</span>
+    </div>
+    <div class="progress-row progress-row--sub">
+      <span class="streak-display" id="streakDisplay"></span>
+      <button class="shop-open-btn" onclick="openShop()">🛍️ Shop</button>
+    </div>
+  </div>
+
   <div class="mood-bar">
     <div class="mood-dot active" id="md1"></div>
     <div class="mood-dot active" id="md2"></div>
@@ -700,458 +93,101 @@
     <span class="mood-label" id="moodLabel">HAPPY</span>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat-row">
       <div class="stat-label">💧 Wasser</div>
-      <div class="stat-bar-bg">
-        <div class="stat-bar water" id="waterBar" style="width:100%"></div>
-      </div>
+      <div class="stat-bar-bg"><div class="stat-bar water" id="waterBar" style="width:100%"></div></div>
       <div class="stat-val" id="waterVal">100</div>
     </div>
     <div class="stat-row">
       <div class="stat-label">🥗 Essen</div>
-      <div class="stat-bar-bg">
-        <div class="stat-bar food" id="foodBar" style="width:100%"></div>
-      </div>
+      <div class="stat-bar-bg"><div class="stat-bar food" id="foodBar" style="width:100%"></div></div>
       <div class="stat-val" id="foodVal">100</div>
     </div>
     <div class="stat-row">
       <div class="stat-label">🏃 Bewegung</div>
-      <div class="stat-bar-bg">
-        <div class="stat-bar exercise" id="exerciseBar" style="width:100%"></div>
-      </div>
+      <div class="stat-bar-bg"><div class="stat-bar exercise" id="exerciseBar" style="width:100%"></div></div>
       <div class="stat-val" id="exerciseVal">100</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-label">⚡ Energie</div>
+      <div class="stat-bar-bg"><div class="stat-bar energy" id="energyBar" style="width:100%"></div></div>
+      <div class="stat-val" id="energyVal">100</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-label">💬 Soziales</div>
+      <div class="stat-bar-bg"><div class="stat-bar social" id="socialBar" style="width:80%"></div></div>
+      <div class="stat-val" id="socialVal">80</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-label">🧼 Hygiene</div>
+      <div class="stat-bar-bg"><div class="stat-bar hygiene" id="hygieneBar" style="width:100%"></div></div>
+      <div class="stat-val" id="hygieneVal">100</div>
     </div>
   </div>
 
-  <!-- Buttons -->
-  <div class="buttons">
-    <button class="btn water-btn" onclick="feedAction('water')" id="btnWater">
-      <span class="btn-icon">💧</span>Wasser<br/>geben
-    </button>
-    <button class="btn food-btn" onclick="feedAction('food')" id="btnFood">
-      <span class="btn-icon">🥗</span>Füttern
-    </button>
-    <button class="btn exercise-btn" onclick="feedAction('exercise')" id="btnExercise">
-      <span class="btn-icon">🏃</span>Sport<br/>machen
-    </button>
+  <div class="btn-container">
+    <div class="buttons">
+      <button class="btn water-btn" onclick="feedAction('water')" id="btnWater">
+        <span class="btn-icon">💧</span>Getrunken!
+      </button>
+      <button class="btn food-btn" onclick="feedAction('food')" id="btnFood">
+        <span class="btn-icon">🥗</span>Gegessen!
+      </button>
+      <button class="btn exercise-btn" onclick="feedAction('exercise')" id="btnExercise">
+        <span class="btn-icon">🏃</span>Bewegt!
+      </button>
+    </div>
+    <div class="buttons buttons-2col">
+      <button class="btn social-btn" onclick="feedAction('social')" id="btnSocial">
+        <span class="btn-icon">💬</span>Geplaudert!
+      </button>
+      <button class="btn hygiene-btn" onclick="feedAction('hygiene')" id="btnHygiene">
+        <span class="btn-icon">🧼</span>Geduscht!
+      </button>
+    </div>
+    <div class="sleep-overlay" id="sleepOverlay">
+      💤 Bruno schläft<br/>
+      <span style="opacity:0.7;font-size:0.85em">Energie lädt bis 07:00 ⚡</span>
+    </div>
   </div>
 
-  <!-- Status message -->
-  <div class="status-msg" id="statusMsg">Alles im grünen Bereich! Bruno liebt dich. 💜</div>
+  <div class="status-msg" id="statusMsg">Alles gut! Lea kümmert sich um sich selbst. 💜</div>
 
+  <div class="calendar-section">
+    <div class="calendar-label">Letzte 14 Tage</div>
+    <div class="calendar-dots" id="calendarDots"></div>
+  </div>
 </div>
 
 <footer>
-  Made with 💜 for Lea · Bruno v1.0<br/>
-  Stats werden automatisch gespeichert
+  Leas persönlicher Wellness-Coach · Bruno v2.0<br/>
+  <span class="gen-info" id="genInfo">Generation 1</span>
 </footer>
+
+<div class="shop-modal" id="shopModal">
+  <div class="shop-modal-inner">
+    <div class="shop-header">
+      🛍️ Brunos Boutique
+      <button class="shop-close-btn" onclick="closeShop()">✕</button>
+    </div>
+    <div class="shop-coins-bar" id="shopCoinsBar">💰 0 Coins</div>
+    <div class="shop-list" id="shopList"></div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/phoenix.js"></script>
+<script src="js/main.js"></script>
 <script>
-/* ══════════════════════════════════════════════
-   BRUNO – TAMAGOTCHI ENGINE
-   ══════════════════════════════════════════════ */
-
-// ── Messages ──
-const MESSAGES = {
-  water: {
-    low:  [
-      "Ich sterbe gleich vor Durst... und du? 💀",
-      "Wasser ist Leben. Ich sterbe. Tschüss.",
-      "Mein Mund ist trockener als die Sahara 🏜️",
-      "Bitte, Lea. Nur ein Schluck. Ich flehe dich an.",
-      "Ich weine gerade – aber aus Mangel an Flüssigkeit.",
-      "H₂O? Nie gehört in diesem Haushalt. 😤"
-    ],
-    crit: [
-      "ICH VERDURSTE HIER!! NOTRUF! 🚨",
-      "Letzte Worte: ...W...Was...ser...",
-      "Lea. LEA. WASSER. BITTE. JETZT. 💀💧",
-      "Mein Anwalt wird von dir hören. Verdursten ist illegal.",
-      "404: Wasser nicht gefunden. Ich auch bald nicht mehr. 👻"
-    ]
-  },
-  food: {
-    low:  [
-      "Mein Magenknurren ist lauter als dein Wecker 🔔",
-      "Ich hab Hunger und du bist hier einfach... nichts? 🥲",
-      "Essen wäre schon geil jetzt, nur so als Idee.",
-      "Der letzte Bissen war vor einer Ewigkeit. Bin ich ein Sklave?",
-      "Ich muss jetzt an Essen denken, um nicht an Hunger zu denken.",
-      "Lea, mein Magen und ich sind uns einig: DU BIST SCHULD. 😤"
-    ],
-    crit: [
-      "ICH VERHUNGERE!! ESSEN JETZT!! 🍕🚨",
-      "Sende Lebenszeichen... nein, doch nicht. Zu schwach. 💀",
-      "Die Rippen sehe ich schon durch das Fell. Ich hoffe das macht dir was.",
-      "MAHLZEIT. Oder halt nicht. Weil keine. 😭",
-      "Ich esse gleich die Möbel. Das steht auf deine Kaution."
-    ]
-  },
-  exercise: {
-    low:  [
-      "Ich bin rund wie ein Vollmond. Danke Lea. 🌕",
-      "Meine Beine haben vergessen wie Laufen geht.",
-      "Couch-Potato-Level: Meister. Schade eigentlich.",
-      "Der Arzt sagt, ich soll mich bewegen. Du auch, nebenbei.",
-      "Ich und Sport... wir sollten uns mal wieder treffen.",
-      "Mein Fitnesslevel ist: Sofa. Stage 3. 🛋️😮‍💨"
-    ],
-    crit: [
-      "HILFE ICH BIN EIN BLOB!! 🫠 Wir müssen reden.",
-      "Ich rolle statt zu gehen. Das ist ein Hilferuf.",
-      "Mein letztes Workout war... ich erinnere mich nicht. Zu lange her.",
-      "Bewegungsmangel – die Stille Katastrophe. Ich bin die Katastrophe.",
-      "Mir ist warm und ich habe mich nicht bewegt. Das ist ein Zeichen. 🚩"
-    ]
-  },
-  happy: [
-    "Du bist die Beste, Lea! 🌈✨",
-    "Ich bin so glücklich – kein Dramatik heute! 🎉",
-    "Leben ist schön wenn man gut versorgt ist! 💖",
-    "Danke für das Essen! Ich liebe dich! 🥰",
-    "Perfekte Pflege! 10/10 Würde mich wieder pflegen lassen.",
-    "Bruno.exe läuft einwandfrei! 🟢",
-    "Ich spring vor Freude! Wörtlich! Siehst du das?! 🐾"
-  ],
-  neutral: [
-    "Hmm. Könnte besser sein. Könnte schlechter sein.",
-    "Mir geht's... mittelmäßig. Also eigentlich typisch.",
-    "Ich beobachte die Situation. Aufmerksam.",
-    "Weder glücklich noch traurig. Sehr deutsch von mir.",
-    "Durchschnitt ist auch ein Zustand. 🤷"
-  ]
-};
-
-// ── State ──
-const DEFAULTS = { water: 100, food: 100, exercise: 100 };
-const DECAY_RATE = { water: 0.8, food: 0.6, exercise: 0.4 }; // per minute
-const REFILL_AMOUNT = 35;
-const TICK_INTERVAL = 3000; // ms
-
-let state = loadState();
-let lastTick = state.lastTick || Date.now();
-let isDead = false;
-let currentMsgTimeout = null;
-let exerciseAnimTimeout = null;
-let messageRotateInterval = null;
-
-// ── Load / Save ──
-function loadState() {
-  try {
-    const raw = localStorage.getItem('bruno_state');
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return { ...DEFAULTS, lastTick: Date.now(), dead: false };
-}
-function saveState() {
-  state.lastTick = Date.now();
-  localStorage.setItem('bruno_state', JSON.stringify(state));
-}
-
-// ── Apply elapsed decay (for when page was closed) ──
-function applyOfflineDecay() {
-  const now = Date.now();
-  const elapsed = (now - (state.lastTick || now)) / 1000 / 60; // minutes
-  if (elapsed > 0) {
-    state.water    = Math.max(0, (state.water    ?? 100) - DECAY_RATE.water    * elapsed);
-    state.food     = Math.max(0, (state.food     ?? 100) - DECAY_RATE.food     * elapsed);
-    state.exercise = Math.max(0, (state.exercise ?? 100) - DECAY_RATE.exercise * elapsed);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
   }
-  state.lastTick = now;
-}
-
-// ── UI Helpers ──
-const $  = id => document.getElementById(id);
-const bruno = $('bruno');
-
-function updateBars() {
-  ['water','food','exercise'].forEach(stat => {
-    const val = Math.round(state[stat]);
-    $(`${stat}Bar`).style.width = val + '%';
-    $(`${stat}Val`).textContent = val;
-
-    const bar = $(`${stat}Bar`);
-    bar.classList.remove('low','crit');
-    if (val <= 15) bar.classList.add('crit');
-    else if (val <= 35) bar.classList.add('low');
-  });
-}
-
-function getMood() {
-  const min = Math.min(state.water, state.food, state.exercise);
-  const avg = (state.water + state.food + state.exercise) / 3;
-  if (isDead)                   return 'dead';
-  if (min <= 15 || avg < 25)    return 'sad';
-  if (min > 60 && avg > 70)     return 'happy';
-  return 'neutral';
-}
-
-function updatePetState() {
-  const mood = getMood();
-  bruno.classList.remove('happy','neutral','sad','dead','exercise');
-  bruno.classList.add(mood);
-
-  // Mood dots (1-5)
-  const avg = (state.water + state.food + state.exercise) / 3;
-  const activeDots = isDead ? 0 : Math.max(1, Math.round(avg / 20));
-  for (let i = 1; i <= 5; i++) {
-    $(`md${i}`).classList.toggle('active', i <= activeDots && !isDead);
-  }
-
-  const labels = ['DEAD','SAD','MEH','OKAY','GOOD','HAPPY'];
-  $('moodLabel').textContent = isDead ? 'DEAD' : labels[Math.min(5, activeDots)];
-  $('moodLabel').style.color = isDead ? 'var(--red)' :
-    (activeDots >= 4 ? 'var(--green)' : activeDots <= 2 ? 'var(--red)' : 'var(--accent3)');
-
-  $('deadOverlay').classList.toggle('show', isDead);
-}
-
-function pickMessage() {
-  if (isDead) return null;
-  // Find the worst stat
-  const stats = [
-    { stat: 'water',    val: state.water },
-    { stat: 'food',     val: state.food },
-    { stat: 'exercise', val: state.exercise }
-  ].sort((a,b) => a.val - b.val);
-
-  const worst = stats[0];
-  if (worst.val <= 15) {
-    const pool = MESSAGES[worst.stat].crit;
-    return pool[Math.floor(Math.random() * pool.length)];
-  }
-  if (worst.val <= 35) {
-    const pool = MESSAGES[worst.stat].low;
-    return pool[Math.floor(Math.random() * pool.length)];
-  }
-  // All good
-  const mood = getMood();
-  if (mood === 'happy') {
-    const pool = MESSAGES.happy;
-    return pool[Math.floor(Math.random() * pool.length)];
-  }
-  const pool = MESSAGES.neutral;
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-function showSpeech(msg, duration = 4500) {
-  const el = $('speechBubble');
-  el.style.opacity = '0';
-  setTimeout(() => {
-    el.textContent = msg;
-    el.style.opacity = '1';
-  }, 200);
-}
-
-function rotateMessages() {
-  const msg = pickMessage();
-  if (msg) showSpeech(msg);
-}
-
-function updateStatusMsg() {
-  const el = $('statusMsg');
-  const min = Math.min(state.water, state.food, state.exercise);
-  if (isDead) {
-    el.textContent = '💀 Bruno schläft den ewigen Schlaf.';
-    el.style.color = 'var(--red)';
-    return;
-  }
-  if (min <= 15) {
-    el.textContent = '🚨 NOTFALL! Bruno braucht sofort Hilfe!';
-    el.style.color = 'var(--red)';
-  } else if (min <= 35) {
-    const names = ['water','food','exercise'].filter(s => state[s] <= 35);
-    const icons = { water:'💧', food:'🥗', exercise:'🏃' };
-    el.textContent = `⚠️ ${names.map(n=>icons[n]).join(' ')} braucht Aufmerksamkeit!`;
-    el.style.color = 'var(--accent3)';
-  } else {
-    const avg = (state.water + state.food + state.exercise) / 3;
-    if (avg > 75) {
-      el.textContent = 'Bruno ist topfit! Danke, Lea! 💜';
-      el.style.color = 'var(--green)';
-    } else {
-      el.textContent = 'Alles im grünen Bereich! 👍';
-      el.style.color = '#b090f0';
-    }
-  }
-}
-
-// ── Tick decay ──
-function tick() {
-  if (isDead) return;
-  const minuteFraction = TICK_INTERVAL / 1000 / 60;
-  state.water    = Math.max(0, state.water    - DECAY_RATE.water    * minuteFraction);
-  state.food     = Math.max(0, state.food     - DECAY_RATE.food     * minuteFraction);
-  state.exercise = Math.max(0, state.exercise - DECAY_RATE.exercise * minuteFraction);
-
-  // Death check
-  if (state.food <= 0 && state.water <= 0) {
-    killBruno();
-    return;
-  }
-
-  updateBars();
-  updatePetState();
-  updateStatusMsg();
-  saveState();
-}
-
-// ── Kill / Revive ──
-function killBruno() {
-  isDead = true;
-  state.dead = true;
-  saveState();
-  updatePetState();
-  showSpeech('Auf... Wieder... sehen... Lea... 👻');
-  updateStatusMsg();
-  clearInterval(messageRotateInterval);
-}
-
-function reviveBruno() {
-  isDead = false;
-  state.dead = false;
-  state.water = 60;
-  state.food  = 60;
-  state.exercise = 50;
-  saveState();
-  updateBars();
-  updatePetState();
-  showSpeech('Ich lebe! Wie ein Wunder! Danke, Lea! 💖');
-  updateStatusMsg();
-  spawnSparkles(8, $('petStage'));
-  startMessageRotation();
-  showToast('🎉 Bruno ist wiedergeboren!');
-}
-
-// ── Feed Actions ──
-function feedAction(type) {
-  if (isDead) {
-    showToast('💀 Bruno ist tot. Erst wiederbeleben!');
-    return;
-  }
-
-  state[type] = Math.min(100, state[type] + REFILL_AMOUNT);
-  saveState();
-  updateBars();
-
-  const btn = $(`btn${type.charAt(0).toUpperCase() + type.slice(1)}`);
-  btn.classList.add('pressed');
-  setTimeout(() => btn.classList.remove('pressed'), 200);
-
-  // Animations + messages
-  const reactions = {
-    water:    { msg: 'Ahhh! Erfrischend! Danke Lea! 💧😊', emoji: '💧', toast: 'Wasser gegeben! 💧' },
-    food:     { msg: 'Nom nom nom! SO GUT! 🥗😋',           emoji: '🥗', toast: 'Gefüttert! 🥗' },
-    exercise: { msg: 'JA! Sport! Ich liebe Sport! 🏃💪',    emoji: '🏃', toast: 'Sport gemacht! 🏃' }
-  };
-
-  const r = reactions[type];
-  showSpeech(r.msg);
-  showToast(r.toast);
-  spawnFloatEmoji(r.emoji, btn);
-
-  if (type === 'exercise') {
-    bruno.classList.remove('happy','neutral','sad');
-    bruno.classList.add('exercise');
-    clearTimeout(exerciseAnimTimeout);
-    exerciseAnimTimeout = setTimeout(() => {
-      bruno.classList.remove('exercise');
-      updatePetState();
-    }, 2000);
-  } else {
-    // happy pulse
-    const prev = getMood();
-    bruno.classList.remove('happy','neutral','sad','exercise');
-    bruno.classList.add('happy');
-    clearTimeout(exerciseAnimTimeout);
-    exerciseAnimTimeout = setTimeout(() => {
-      bruno.classList.remove('happy');
-      updatePetState();
-    }, 1500);
-    spawnSparkles(5, $('petStage'));
-  }
-
-  updatePetState();
-  updateStatusMsg();
-}
-
-// ── Visual Effects ──
-function spawnSparkles(count, container) {
-  const s = $('sparkles');
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'sparkle';
-      const emojis = ['✨','⭐','💫','🌟','💥'];
-      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      el.style.left = (10 + Math.random() * 80) + '%';
-      el.style.top  = (10 + Math.random() * 60) + '%';
-      s.appendChild(el);
-      setTimeout(() => el.remove(), 900);
-    }, i * 80);
-  }
-}
-
-function spawnFloatEmoji(emoji, btn) {
-  const el = document.createElement('div');
-  el.className = 'float-pop';
-  el.textContent = emoji;
-  const rect = btn.getBoundingClientRect();
-  el.style.left = rect.left + rect.width/2 - 15 + 'px';
-  el.style.top  = rect.top  - 10 + 'px';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 1000);
-}
-
-function showToast(msg) {
-  const t = $('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(showToast._timeout);
-  showToast._timeout = setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// ── Message rotation ──
-function startMessageRotation() {
-  clearInterval(messageRotateInterval);
-  rotateMessages();
-  messageRotateInterval = setInterval(rotateMessages, 6000);
-}
-
-// ── Init ──
-function init() {
-  // Capture offline duration before applying decay (state.lastTick gets updated inside)
-  const offlineMs = Date.now() - (state.lastTick || Date.now());
-  const offlineMinutes = Math.round(offlineMs / 1000 / 60);
-
-  applyOfflineDecay();
-  isDead = state.dead || false;
-
-  // If offline time was enough to kill
-  if (state.food <= 0 && state.water <= 0) {
-    isDead = true;
-    state.dead = true;
-  }
-
-  updateBars();
-  updatePetState();
-  updateStatusMsg();
-  startMessageRotation();
-  setInterval(tick, TICK_INTERVAL);
-
-  if (offlineMinutes > 5 && !isDead) {
-    setTimeout(() => showToast(`Bruno war ${offlineMinutes} Minuten allein... 😢`), 1500);
-  }
-
-  saveState();
-}
-
-init();
 </script>
-
 </body>
 </html>
