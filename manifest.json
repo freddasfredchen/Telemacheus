@@ -1,10 +1,17 @@
 {
-  "name": "Bruno – Brunos Wellness-Wächter",
+  "name": "Bruno – Leas Wellness-Buddy",
   "short_name": "Bruno",
-  "description": "Dein kleines virtuelles Haustier, das dich (mit Witz) daran erinnert, Wasser zu trinken, zu essen und dich zu bewegen.",
-  "start_url": "/",
+  "description": "Dein persönlicher Wellness-Coach erinnert dich (mit Witz) an Wasser, Essen, Sport und mehr.",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#1a0a2e",
   "theme_color": "#ff6eb4",
-  "icons": []
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
