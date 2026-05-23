@@ -394,12 +394,17 @@ header p.subtitle {
 .stat-bar.water    { background: linear-gradient(90deg, #1a8aff, var(--accent2)); }
 .stat-bar.food     { background: linear-gradient(90deg, #39ff14, #9cff14); }
 .stat-bar.exercise { background: linear-gradient(90deg, #ff6ec7, #ff9a3c); }
+.stat-bar.energy   { background: linear-gradient(90deg, #ffa500, #ffe066); }
+.stat-bar.social   { background: linear-gradient(90deg, #c77dff, #e0aaff); }
+.stat-bar.hygiene  { background: linear-gradient(90deg, #00b4d8, #90e0ef); }
 .stat-bar.low      { background: linear-gradient(90deg, #ff8c00, var(--accent3)) !important; }
 .stat-bar.crit     { background: linear-gradient(90deg, var(--red), #ff6060) !important; }
 .stat-val { font-size: clamp(0.42rem, 1.8vw, 0.55rem); width: 36px; text-align: right; color: var(--accent2); }
 
 /* Buttons */
-.buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.btn-container { position: relative; margin-bottom: 14px; }
+.buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.buttons-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0; }
 .btn {
   position: relative;
   background: var(--panel2);
@@ -423,7 +428,28 @@ header p.subtitle {
 .btn.water-btn    { border-color: var(--accent2); box-shadow: 0 4px 0 #0a5566, 0 0 8px rgba(126,249,255,0.2); }
 .btn.food-btn     { border-color: var(--green);   box-shadow: 0 4px 0 #1a6600, 0 0 8px rgba(57,255,20,0.2); }
 .btn.exercise-btn { border-color: var(--accent3); box-shadow: 0 4px 0 #886600, 0 0 8px rgba(255,230,109,0.2); }
+.btn.social-btn   { border-color: #c77dff;         box-shadow: 0 4px 0 #5a0088, 0 0 8px rgba(199,125,255,0.2); }
+.btn.hygiene-btn  { border-color: #00b4d8;         box-shadow: 0 4px 0 #005566, 0 0 8px rgba(0,180,216,0.2); }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
+
+/* Sleep overlay covers the button area */
+.sleep-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 3, 25, 0.88);
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  color: var(--accent2);
+  font-size: clamp(0.38rem, 1.7vw, 0.52rem);
+  text-align: center;
+  line-height: 2.2;
+  gap: 4px;
+  pointer-events: none;
+}
 
 /* Status message */
 .status-msg {
@@ -477,3 +503,35 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 .float-pop { position: fixed; font-size: 2rem; pointer-events: none; z-index: 9998; animation: bubblePop 1s ease-out forwards; }
+
+/* ── Sleeping state ── */
+@keyframes sleepBreath {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-3px); }
+}
+.bruno.sleeping { animation: sleepBreath 3.5s ease-in-out infinite; filter: brightness(0.65) saturate(0.5); }
+.bruno.sleeping .eye {
+  height: 3px !important;
+  background: transparent !important;
+  border: 2px solid #1a8a99;
+  border-top: none !important;
+  border-radius: 0 0 6px 6px;
+}
+.bruno.sleeping .eye::after { display: none; }
+.bruno.sleeping .mouth {
+  width: 16px; height: 7px;
+  border: 2px solid #1a0a2e;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+.bruno.sleeping .tail { animation: none; transform: rotate(-15deg); }
+.bruno.sleeping .arm.left  { transform: rotate(55deg); }
+.bruno.sleeping .arm.right { transform: rotate(-55deg); }
+
+/* ZZZ particles float upward instead of rotating */
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translateY(0) scale(0.6); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-45px) scale(1.1); }
+}
+.sparkle-zzz { position: absolute; animation: floatUp 2s ease-out forwards; color: var(--accent2); }

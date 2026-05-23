@@ -2,21 +2,24 @@ const $ = id => document.getElementById(id);
 const brunoEl = $('bruno');
 
 function updateBars() {
-  ['water','food','exercise'].forEach(stat => {
-    const val = Math.round(state[stat]);
-    $(`${stat}Bar`).style.width = val + '%';
-    $(`${stat}Val`).textContent = val;
+  STAT_NAMES.forEach(stat => {
     const bar = $(`${stat}Bar`);
-    bar.classList.remove('low','crit');
-    if (val <= 15) bar.classList.add('crit');
-    else if (val <= 35) bar.classList.add('low');
+    const val = $(`${stat}Val`);
+    if (!bar) return;
+    const v = Math.round(state[stat]);
+    bar.style.width = v + '%';
+    val.textContent = v;
+    bar.classList.remove('low', 'crit');
+    if (v <= 15) bar.classList.add('crit');
+    else if (v <= 35) bar.classList.add('low');
   });
 }
 
 function getMood() {
   if (isEgg || phoenixPending) return phoenixPending ? 'phoenix' : 'egg';
-  const min = Math.min(state.water, state.food, state.exercise);
-  const avg = (state.water + state.food + state.exercise) / 3;
+  if (getTimePhase() === 'sleep') return 'sleeping';
+  const min = Math.min(state.water, state.food, state.energy);
+  const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
   if (min <= 15 || avg < 25) return 'sad';
   if (min > 60 && avg > 70)  return 'happy';
   return 'neutral';
@@ -37,18 +40,25 @@ function updatePetState() {
 
   $('eggWrap').classList.remove('show');
   brunoEl.style.display = '';
-  brunoEl.classList.remove('happy','neutral','sad','exercise','phoenix');
+  brunoEl.classList.remove('happy', 'neutral', 'sad', 'exercise', 'phoenix', 'sleeping');
   brunoEl.classList.add(mood);
 
-  const avg = (state.water + state.food + state.exercise) / 3;
+  const sleeping = mood === 'sleeping';
+  $('sleepOverlay').style.display = sleeping ? 'flex' : 'none';
+  document.querySelectorAll('.btn').forEach(b => { b.disabled = sleeping; });
+
+  const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
   const dots = Math.max(1, Math.round(avg / 20));
-  for (let i = 1; i <= 5; i++) $(`md${i}`).classList.toggle('active', i <= dots);
+  for (let i = 1; i <= 5; i++) $(`md${i}`).classList.toggle('active', i <= dots && !sleeping);
 
   if (mood === 'phoenix') {
     $('moodLabel').textContent = '🔥 PHÖNIX';
     $('moodLabel').style.color = 'var(--phoenix)';
+  } else if (sleeping) {
+    $('moodLabel').textContent = '💤 SCHLÄFT';
+    $('moodLabel').style.color = 'var(--accent2)';
   } else {
-    const labels = ['','SAD','MEH','OKAY','GOOD','HAPPY'];
+    const labels = ['', 'SAD', 'MEH', 'OKAY', 'GOOD', 'HAPPY'];
     $('moodLabel').textContent = labels[Math.min(5, dots)];
     $('moodLabel').style.color = dots >= 4 ? 'var(--green)' : dots <= 2 ? 'var(--red)' : 'var(--accent3)';
   }
@@ -65,9 +75,12 @@ function formatAge(m) {
 function pickMessage() {
   if (isEgg) return null;
   if (phoenixPending) return rand(MESSAGES.phoenixWarn);
-  const sorted = ['water','food','exercise']
+  if (getTimePhase() === 'sleep') return rand(MESSAGES.phase.sleep_zzz);
+
+  const sorted = STAT_NAMES
     .map(s => ({ s, v: state[s] }))
-    .sort((a,b) => a.v - b.v);
+    .sort((a, b) => a.v - b.v);
+
   const worst = sorted[0];
   if (worst.v <= 15) return rand(MESSAGES[worst.s].crit);
   if (worst.v <= 35) return rand(MESSAGES[worst.s].low);
@@ -97,25 +110,32 @@ function updateStatusMsg() {
     el.style.color = 'var(--phoenix)';
     return;
   }
-  const min = Math.min(state.water, state.food, state.exercise);
+  if (getTimePhase() === 'sleep') {
+    el.textContent = '💤 Bruno schläft. Energie wird geladen... ⚡';
+    el.style.color = 'var(--accent2)';
+    return;
+  }
+  const icons = { water: '💧', food: '🥗', exercise: '🏃', energy: '⚡', social: '💬', hygiene: '🧼' };
+  const min = Math.min(...STAT_NAMES.map(s => state[s]));
   if (min <= 15) {
     el.textContent = '🚨 NOTFALL! Bruno braucht sofort Hilfe!';
     el.style.color = 'var(--red)';
   } else if (min <= 35) {
-    const icons = { water:'💧', food:'🥗', exercise:'🏃' };
-    const which = ['water','food','exercise'].filter(s => state[s] <= 35).map(n => icons[n]).join(' ');
+    const which = STAT_NAMES.filter(s => state[s] <= 35).map(s => icons[s]).join(' ');
     el.textContent = `⚠️ ${which} braucht Aufmerksamkeit!`;
     el.style.color = 'var(--accent3)';
   } else {
-    const avg = (state.water + state.food + state.exercise) / 3;
+    const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
     if (avg > 75) { el.textContent = 'Bruno ist topfit! Danke, Lea! 💜'; el.style.color = 'var(--green)'; }
     else          { el.textContent = 'Alles im grünen Bereich! 👍';       el.style.color = '#b090f0'; }
   }
 }
 
+// ── Visual effects ──
+
 function spawnSparkles(count) {
   const s = $('sparkles');
-  const emojis = ['✨','⭐','💫','🌟','💥'];
+  const emojis = ['✨', '⭐', '💫', '🌟', '💥'];
   for (let i = 0; i < count; i++) {
     setTimeout(() => {
       const el = document.createElement('div');
@@ -123,15 +143,25 @@ function spawnSparkles(count) {
       el.textContent = rand(emojis);
       el.style.left = (10 + Math.random() * 80) + '%';
       el.style.top  = (10 + Math.random() * 60) + '%';
-      s.appendChild(el);
+      $('sparkles').appendChild(el);
       setTimeout(() => el.remove(), 900);
     }, i * 80);
   }
 }
 
+function spawnZzz() {
+  const el = document.createElement('div');
+  el.className = 'sparkle-zzz';
+  el.textContent = ['💤', 'Z', 'z', 'Zzz'][Math.floor(Math.random() * 4)];
+  el.style.left = (30 + Math.random() * 40) + '%';
+  el.style.top  = (15 + Math.random() * 35) + '%';
+  el.style.fontSize = (10 + Math.random() * 8) + 'px';
+  $('sparkles').appendChild(el);
+  setTimeout(() => el.remove(), 2000);
+}
+
 function spawnFireParticles() {
-  const s = $('sparkles');
-  const emojis = ['🔥','✨','💫','⭐','🌟','🧡','💛'];
+  const emojis = ['🔥', '✨', '💫', '⭐', '🌟', '🧡', '💛'];
   for (let i = 0; i < 14; i++) {
     setTimeout(() => {
       const el = document.createElement('div');
@@ -140,7 +170,7 @@ function spawnFireParticles() {
       el.style.left = (5 + Math.random() * 90) + '%';
       el.style.top  = (5 + Math.random() * 75) + '%';
       el.style.fontSize = (11 + Math.random() * 10) + 'px';
-      s.appendChild(el);
+      $('sparkles').appendChild(el);
       setTimeout(() => el.remove(), 900);
     }, i * 90);
   }

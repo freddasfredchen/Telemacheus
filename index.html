@@ -80,18 +80,47 @@
       <div class="stat-bar-bg"><div class="stat-bar exercise" id="exerciseBar" style="width:100%"></div></div>
       <div class="stat-val" id="exerciseVal">100</div>
     </div>
+    <div class="stat-row">
+      <div class="stat-label">⚡ Energie</div>
+      <div class="stat-bar-bg"><div class="stat-bar energy" id="energyBar" style="width:100%"></div></div>
+      <div class="stat-val" id="energyVal">100</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-label">💬 Soziales</div>
+      <div class="stat-bar-bg"><div class="stat-bar social" id="socialBar" style="width:80%"></div></div>
+      <div class="stat-val" id="socialVal">80</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-label">🧼 Hygiene</div>
+      <div class="stat-bar-bg"><div class="stat-bar hygiene" id="hygieneBar" style="width:100%"></div></div>
+      <div class="stat-val" id="hygieneVal">100</div>
+    </div>
   </div>
 
-  <div class="buttons">
-    <button class="btn water-btn" onclick="feedAction('water')" id="btnWater">
-      <span class="btn-icon">💧</span>Wasser<br/>geben
-    </button>
-    <button class="btn food-btn" onclick="feedAction('food')" id="btnFood">
-      <span class="btn-icon">🥗</span>Füttern
-    </button>
-    <button class="btn exercise-btn" onclick="feedAction('exercise')" id="btnExercise">
-      <span class="btn-icon">🏃</span>Sport<br/>machen
-    </button>
+  <div class="btn-container">
+    <div class="buttons">
+      <button class="btn water-btn" onclick="feedAction('water')" id="btnWater">
+        <span class="btn-icon">💧</span>Wasser<br/>geben
+      </button>
+      <button class="btn food-btn" onclick="feedAction('food')" id="btnFood">
+        <span class="btn-icon">🥗</span>Füttern
+      </button>
+      <button class="btn exercise-btn" onclick="feedAction('exercise')" id="btnExercise">
+        <span class="btn-icon">🏃</span>Sport<br/>machen
+      </button>
+    </div>
+    <div class="buttons buttons-2col">
+      <button class="btn social-btn" onclick="feedAction('social')" id="btnSocial">
+        <span class="btn-icon">💬</span>Spielen
+      </button>
+      <button class="btn hygiene-btn" onclick="feedAction('hygiene')" id="btnHygiene">
+        <span class="btn-icon">🧼</span>Waschen
+      </button>
+    </div>
+    <div class="sleep-overlay" id="sleepOverlay">
+      💤 Bruno schläft<br/>
+      <span style="opacity:0.7;font-size:0.85em">Energie lädt bis 07:00 ⚡</span>
+    </div>
   </div>
 
   <div class="status-msg" id="statusMsg">Alles im grünen Bereich! Bruno liebt dich. 💜</div>
