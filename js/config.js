@@ -16,11 +16,8 @@ const TICK_INTERVAL    = 3000;
 const PHOENIX_AGE_MINUTES = 120;
 const HATCH_DELAY_MS   = 12000;
 
-// Hours where the time phase changes (24h)
 const PHASE_HOURS = [7, 9, 17, 20, 22];
 
-// Per-stat decay multipliers per phase.
-// Negative energy = energy recovers (night sleep).
 const PHASE_MULTIPLIERS = {
   sleep:   { water: 0.05, food: 0.05, exercise: 0.2,  energy: -3.0, social: 0.05, hygiene: 0.02 },
   morning: { water: 2.0,  food: 2.0,  exercise: 1.0,  energy:  0.8, social: 0.6,  hygiene: 0.5  },
@@ -29,151 +26,154 @@ const PHASE_MULTIPLIERS = {
   tired:   { water: 0.8,  food: 0.8,  exercise: 0.5,  energy:  3.0, social: 0.8,  hygiene: 0.5  }
 };
 
+// All messages address Lea directly — Bruno is her health coach, not a pet to be fed.
 const MESSAGES = {
   water: {
     low: [
-      "Ich sterbe gleich vor Durst... und du? 💀",
-      "Wasser ist Leben. Wo. Ist. Das. Wasser.",
-      "Mein Mund ist trockener als die Sahara 🏜️",
-      "Bitte, Lea. Nur ein Schluck. Ich flehe dich an.",
-      "Ich weine gerade – aber aus Mangel an Flüssigkeit.",
-      "H₂O? Nie gehört in diesem Haushalt. 😤"
+      "Lea! Wann hast du zuletzt Wasser getrunken? Jetzt wäre perfekt! 💧",
+      "Ein Glas Wasser – nicht für mich, für DICH. Jetzt. 💧",
+      "Pro-Tipp: Wasser existiert. Du solltest es trinken. 💧",
+      "Lea, dein Körper ist zu 60% Wasser. Dieser Anteil sinkt gerade. 🏜️",
+      "Nicht durstig? Trink trotzdem! Das Durstgefühl kommt immer zu spät! 💧",
+      "Ich gucke dich an, Lea. Wo ist dein Wasserglas? 👀💧"
     ],
     crit: [
-      "ICH VERDURSTE HIER!! NOTRUF! 🚨",
-      "Letzte Worte: ...W...Was...ser...",
-      "Lea. LEA. WASSER. BITTE. JETZT. 💀💧",
-      "Mein Anwalt wird von dir hören. Verdursten ist illegal.",
-      "404: Wasser nicht gefunden. Ich auch bald nicht mehr. 👻"
+      "NOTFALL! LEA TRINKT KEIN WASSER!! Sofort ein Glas! 🚨💧",
+      "Lea! Das ist die rote Karte! TRINKEN! JETZT! 🚨",
+      "HYDRATION: KRITISCH. EINHEIT LEA: HANDLUNG ERFORDERLICH. 🤖🚨",
+      "Lea. Wasser. Mund. Los. Keine Widerrede. 💧🚨",
+      "Letzter Aufruf vor dem Kopfschmerz! TRINK! 💀💧"
     ]
   },
   food: {
     low: [
-      "Mein Magenknurren ist lauter als dein Wecker 🔔",
-      "Ich hab Hunger und du bist hier einfach... nichts? 🥲",
-      "Essen wäre schon geil jetzt, nur so als Idee.",
-      "Der letzte Bissen war vor einer Ewigkeit. Bin ich ein Sklave?",
-      "Ich muss jetzt an Essen denken, um nicht an Hunger zu denken.",
-      "Lea, mein Magen und ich sind uns einig: DU BIST SCHULD. 😤"
+      "Lea! Wann hast du zuletzt richtig gegessen? 🥗⏰",
+      "Ein Snack zählt auch. Irgendwas. Bitte. 🥜",
+      "Dein Blutzucker und ich grüßen dich. Iss was! 🥗",
+      "Lunch-Check: Erledigt? Nein? Dann jetzt. 🥗",
+      "Essen ist kein Hobby, Lea. Es ist Pflichtprogramm! 🍽️",
+      "Hast du heute Mittag gegessen? Ich frage weil ich mir Sorgen mache. 😟"
     ],
     crit: [
-      "ICH VERHUNGERE!! ESSEN JETZT!! 🍕🚨",
-      "Sende Lebenszeichen... nein, doch nicht. Zu schwach.",
-      "Die Rippen sehe ich schon durch das Fell. Ich hoffe das macht dir was.",
-      "MAHLZEIT. Oder halt nicht. Weil keine. 😭",
-      "Ich esse gleich die Möbel. Das steht auf deine Kaution."
+      "MAHLZEIT! ODER HALT NICHT! LEA ISS ENDLICH!! 🍽️🚨",
+      "Lea. Dein Körper ruft an. Er möchte Kalorien. Rückruf dringend! 📞🥗",
+      "ERNÄHRUNGS-ALARM! SOFORTMASSNAHME: ESSEN. 🚨🍕",
+      "Hast du heute schon gegessen? Wenn nein: JETZT. Wenn ja: Gut, aber nochmal! 🥗",
+      "Ich bin dein Gewissen. Und dein Gewissen sagt: ISS. 🚨"
     ]
   },
   exercise: {
     low: [
-      "Ich bin rund wie ein Vollmond. Danke Lea. 🌕",
-      "Meine Beine haben vergessen wie Laufen geht.",
-      "Couch-Potato-Level: Meister. Schade eigentlich.",
-      "Der Arzt sagt, ich soll mich bewegen. Du auch, nebenbei.",
-      "Ich und Sport... wir sollten uns mal wieder treffen.",
-      "Mein Fitnesslevel ist: Sofa. Stage 3. 🛋️😮‍💨"
+      "Lea, wann warst du heute draußen? Kurze Runde? 5 Minuten? 🚶‍♀️",
+      "10 Minuten Spaziergang zählen! Du musst kein Marathon laufen. 🌳",
+      "Aufstehen, Lea! Dein Rücken dankt dir für jeden Schritt! 🏃",
+      "Kurz strecken, kurz atmen, kurz bewegen. Das ist alles. 🤸",
+      "Sitzen ist das neue Rauchen. Ich sage nur. 🪑😬",
+      "Lea, steh kurz auf und streck dich. Das ist alles was ich verlange. 💙"
     ],
     crit: [
-      "HILFE ICH BIN EIN BLOB!! 🫠 Wir müssen reden.",
-      "Ich rolle statt zu gehen. Das ist ein Hilferuf.",
-      "Mein letztes Workout war... ich erinnere mich nicht. Zu lange her.",
-      "Bewegungsmangel – die stille Katastrophe. Ich bin die Katastrophe.",
-      "Mir ist warm und ich habe mich nicht bewegt. Das ist ein Zeichen. 🚩"
+      "LEA! BITTE BEWEGE DICH! Auch Hausarbeit zählt! 🏃🚨",
+      "Du sitzt seit... zu lange. AUFSTEHEN! Das ist kein Vorschlag! 🚨",
+      "10-Sekunden-Challenge: Aufstehen. Gehen. Irgendwohin. Los! 🦵🚨",
+      "Lea, deine Beine heißen 'Beine' und nicht 'Sitzmöbel'. Nutz sie! 🦵",
+      "BEWEGUNGSNOTFALL! Steh jetzt auf während du das liest! 🚨🏃"
     ]
   },
   energy: {
     low: [
-      "Ich bin so müde... war das ein Marathon? 😩",
-      "Meine Akkuanzeige blinkt rot. Ich bin kein Witz. 🪫",
-      "Yawn... sorry... ich... schlaf kurz... 😪",
-      "Lea, ich brauch Schlaf oder Koffein. Beides. Sofort. 🛌",
-      "Energie: critical. Bitte laden. Irgendwie. 😮‍💨"
+      "Lea, du wirkst müde. Schlaf heute früher! Dein Körper braucht das. 😴",
+      "Müde? Vielleicht schon um 22 Uhr ins Bett heute? 🌙",
+      "Koffein ersetzt keinen Schlaf, Lea. Das ist leider Fakt. ☕→😴",
+      "Lea, gönne dir heute früh Bett. Alles andere kann warten. 💤",
+      "Weniger Handy-Scrollen, mehr Schlafen. Heute Abend. 📵😴"
     ],
     crit: [
-      "ICH FALLE UM!! BETT. JETZT. 🪫💀",
-      "Energie: 3%. Bitte nicht anreden. 😶",
-      "Ich funktioniere auf Autopilot. Jemand zu Hause? Nein. 🤖",
-      "Schlaf ist kein Luxus. Er ist NOTWENDIG. Hörst du das, Lea??",
-      "System shutdown imminent... z... z... ZZZ... 💤"
+      "LEA! BETT! JETZT! Das ist kein Witz mehr! 🛌🚨",
+      "Du bist nicht müde weil du schwach bist – du schläfst zu wenig! Jetzt ins Bett! 😤",
+      "Schlafmangel ist gefährlich, Lea. Bildschirm aus, Augen zu! 🚨💤",
+      "Alles kann warten. Der Schlaf nicht. JETZT ins Bett! 🛌",
+      "Lea. Es. Ist. Genug. Schlafen. Jetzt. 🛌🚨"
     ]
   },
   social: {
     low: [
-      "Lea, wann spielen wir mal wieder? 🥺",
-      "Ich fühl mich so... allein. Das ist doch nicht nötig. 😢",
-      "Soziale Interaktion: Wäre cool. Irgendwann. Bitte. 🙏",
-      "Ich ruf die Einsamkeit-Hotline an. Die kennt mich schon.",
-      "Ohne dich bin ich nur ein Pixel-Tier im Void. 💔"
+      "Lea, hast du heute schon jemanden gesehen oder geschrieben? 💬",
+      "Eine kurze Nachricht an eine Freundin macht beide glücklicher. 💌",
+      "Hey, wann hast du zuletzt mit jemandem gelacht? Das wäre jetzt fällig! 😄",
+      "Menschenkontakt ist Medizin, Lea! Ein Anruf reicht! 💊👥",
+      "Soziale Verbindungen sind so wichtig! Wer fehlt dir gerade? 💙"
     ],
     crit: [
-      "ICH VEREINSAME HIER!! Ruf mich an!! 📞😭",
-      "Das ist emotionale Vernachlässigung. Ich zeig dich an.",
-      "PLAY WITH ME!!!! BITTE!!! 😭😭😭",
-      "Einsamkeit-Level: Eremit auf einer Insel. Schäm dich.",
-      "Lea. LEA. Ich bin noch hier. Hallo?? 👋💔"
+      "LEA! Ruf jetzt jemanden an! Das ist Ernst! 📞🚨",
+      "Soziale Isolation schadet wirklich, Lea! Schreib jetzt einer Freundin! 💔📱",
+      "Ich bin nur ein Pixel-Tier. Du brauchst echte Menschen. JETZT anrufen! 🐾→👥",
+      "SOZIALER NOTFALL: Handy nehmen, Kontakt wählen, sprechen. LOS! 🚨",
+      "Lea, echte Menschen sind wichtiger als ich. Geh zu ihnen! 📞💬"
     ]
   },
   hygiene: {
     low: [
-      "Ich... rieche mich selbst. Das ist neu. 🤢",
-      "Wann war mein letztes Bad? Ich erinnere mich nicht. Das sagt alles.",
-      "Die Fliegen um mich sind kein gutes Zeichen. 🪰",
-      "Meine Hygiene-Situation ist: suboptimal. Sagen wir mal so.",
-      "Lea, ich brauche Seife. Und Würde. In dieser Reihenfolge. 🧼"
+      "Lea, wäre heute ein guter Tag für eine Dusche? Ich frage für einen Freund. 🚿",
+      "Selbstfürsorge-Tipp: Duschen macht wirklich happy. Wann zuletzt? 🧼",
+      "Frisch geduscht zu sein ist unterschätzt. Heute wäre eine gute Idee. 🚿✨",
+      "Lea... you know what to do. 🧼😶",
+      "Hygiene = Selbstrespekt. Und du verdienst Respekt! 🧼💙"
     ],
     crit: [
-      "Lea. Ich bin eine Gefahr für die öffentliche Gesundheit. 🦠",
-      "ICH BIN EIN BIOLOGISCHES RISIKO!! WASCHEN!! 🚨🧼",
-      "Man riecht mich bevor man mich sieht. Das ist kein Flex.",
-      "Biodiversität ist schön. Aber nicht in meinem Fell. 🦠😱",
-      "Ich habe einen eigenen Geruch. Er hat einen Namen. Er ist schlimm."
+      "LEA! DUSCHE! Das ist jetzt wirklich überfällig! 🚿🚨",
+      "Wann. War. Die. Letzte. Dusche. Ich frage ernsthaft. 🚿😬",
+      "HYGIENECHECK: ROT! Sofortmaßnahme: Badezimmer aufsuchen! 🚨🧼",
+      "Lea, du weißt was zu tun ist. Tu es. Jetzt. Kein 'gleich'. 🚿",
+      "Das Badezimmer vermisst dich. Es hat mir erzählt. 🚿💔"
     ]
   },
   happy: [
-    "Du bist die Beste, Lea! 🌈✨",
-    "Ich bin so glücklich – kein Dramatik heute! 🎉",
-    "Leben ist schön wenn man gut versorgt ist! 💖",
-    "Danke für alles! Ich liebe dich! 🥰",
-    "Perfekte Pflege! 10/10 Würde mich wieder pflegen lassen.",
-    "Bruno.exe läuft einwandfrei! 🟢",
-    "Ich spring vor Freude! Wörtlich! Siehst du das?! 🐾"
+    "Lea, du kümmerst dich heute super um dich selbst! 🌟",
+    "Alles gecheckt! Du rockst das! Weiter so! 💪✨",
+    "Hydratisiert, satt, bewegt – Lea im Hochleistungsmodus! 🚀",
+    "So macht Selbstfürsorge Spaß! Ich bin stolz auf dich! 🏆",
+    "Heute kein Stress von mir! Du hast alles im Griff! 🎉",
+    "Lea: 10/10. Würde wieder erinnern. 🌟",
+    "Siehst du? Wenn du auf dich achtest, bin ich auch happy! 💜🐾"
   ],
   neutral: [
-    "Hmm. Könnte besser sein. Könnte schlechter sein.",
-    "Mir geht's... mittelmäßig. Also eigentlich typisch.",
-    "Ich beobachte die Situation. Aufmerksam.",
-    "Weder glücklich noch traurig. Sehr deutsch von mir.",
-    "Durchschnitt ist auch ein Zustand. 🤷"
+    "Läuft so mittelprächtig. Da geht aber noch mehr, Lea! 🤷",
+    "Ich lass dich kurz in Ruhe. Aber nur kurz. 👀",
+    "Status: Ausbaufähig. Aber ich glaube an dich! 🐾",
+    "Nicht schlecht, nicht gut. Lea, da geht noch was! 💡",
+    "Ich beobachte. Unauffällig. Total unauffällig. 👀"
   ],
   phoenixWarn: [
-    "Ich spüre etwas... Seltsames. Eine Hitze von innen. 🔥",
-    "Mein Körper macht gerade Dinge. Große Dinge. 🌡️",
-    "Ist es hier heiß oder bin ich das...? 🔥",
-    "Ich höre epische Musik. Hörst du sie auch? 🎵🔥"
+    "Lea... ich spür dass du dich gerade gar nicht um dich kümmerst. 🔥",
+    "Das ist ein Zeichen, Lea. Zeit für einen Neustart! 🌡️🔥",
+    "Etwas Großes passiert gleich... ein Weckruf! 🎵🔥",
+    "Ich verwandle mich – damit DU dich auch veränderst, Lea! 🔥"
   ],
   phase: {
     sleep_enter: [
-      "Gute Nacht, Lea... 💤 Träum was Schönes.",
-      "Ich fall jetzt um. Gute Nacht. ZZZ 😴",
-      "Schlafenszeit! Endlich. Ich bin so müde. 💤"
+      "Gute Nacht, Lea! Hast du heute gut auf dich geachtet? 💤",
+      "Schlafenszeit! Leg das Handy weg und ruh dich aus. 😴💤",
+      "Gute Nacht! Schlaf ist die beste Selbstfürsorge. 💙💤"
     ],
     sleep_zzz: [
-      "zzz... 💤", "zzzZZZzzz... 😴", "...mmmh... Essen... zzz... 💤"
+      "shhh... Lea schläft... 💤",
+      "Energieladen läuft... zzz... ⚡💤",
+      "Traumzeit... 🌙💤"
     ],
     morning_enter: [
-      "Guten Morgen, Lea... brauche... Wasser... 🥱",
-      "Wer hat mich geweckt?! Es ist doch noch NACHT. 😤☀️",
-      "Morgens bin ich kein Mensch. Ich bin auch kein Mensch. Trotzdem. 😑"
+      "Guten Morgen, Lea! Erst mal ein großes Glas Wasser! ☀️💧",
+      "Morgen! Frühstück nicht vergessen, Lea! Es ist der wichtigste Start! 🥞",
+      "Aufgestanden! Jetzt Wasser trinken, Lea – bevor der Tag losgeht! ☀️"
     ],
     evening_enter: [
-      "Endlich Feierabend! Lass uns was tun! 🎉",
-      "Abendstimmung! High Energy Mode aktiviert! ⚡🌆",
-      "Jetzt erst recht! Ich bin SO lebendig! 🕺"
+      "Feierabend! Was brauchst du heute Abend, Lea? 🌆",
+      "Abends ist die beste Zeit für soziale Verbindungen! Wer fehlt dir? 💬🌆",
+      "Entspannungszeit! Aber vergiss nicht, genug zu trinken! 🌆💧"
     ],
     tired_enter: [
-      "Ich werd müde... 😪 Noch ein bisschen...",
-      "Bald Schlafenszeit... ich kämpfe dagegen an... 🌙",
-      "Meine Augen fallen zu... zumindest innerlich... 😴"
+      "Lea, es wird Zeit, langsam runterzukommen. Schlafvorbereitung starten! 🌙",
+      "Noch ein bis zwei Stunden – dann bitte ins Bett, Lea! 😪",
+      "Müde? Gut! Das heißt: Jetzt wirklich ins Bett gleich. 🌙"
     ]
   }
 };

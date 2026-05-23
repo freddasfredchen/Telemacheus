@@ -101,33 +101,34 @@ function rotateMessages() {
 function updateStatusMsg() {
   const el = $('statusMsg');
   if (isEgg) {
-    el.textContent = '🥚 Bruno verwandelt sich... Warte auf das Schlüpfen!';
+    el.textContent = '🥚 Bruno verwandelt sich... Ein Neustart für Lea!';
     el.style.color = 'var(--phoenix)';
     return;
   }
   if (phoenixPending) {
-    el.textContent = '🔥 Etwas Magisches passiert... Bruno leuchtet!';
+    el.textContent = '🔥 Bruno sendet ein Zeichen: Zeit für einen Neustart, Lea!';
     el.style.color = 'var(--phoenix)';
     return;
   }
   if (getTimePhase() === 'sleep') {
-    el.textContent = '💤 Bruno schläft. Energie wird geladen... ⚡';
+    el.textContent = '💤 Schlaf gut, Lea! Morgen früh erst Wasser trinken! ⚡';
     el.style.color = 'var(--accent2)';
     return;
   }
   const icons = { water: '💧', food: '🥗', exercise: '🏃', energy: '⚡', social: '💬', hygiene: '🧼' };
+  const labels = { water: 'Trinken', food: 'Essen', exercise: 'Bewegen', energy: 'Schlafen', social: 'Verbindungen', hygiene: 'Duschen' };
   const min = Math.min(...STAT_NAMES.map(s => state[s]));
   if (min <= 15) {
-    el.textContent = '🚨 NOTFALL! Bruno braucht sofort Hilfe!';
+    el.textContent = '🚨 Lea braucht jetzt sofort Selbstfürsorge!';
     el.style.color = 'var(--red)';
   } else if (min <= 35) {
-    const which = STAT_NAMES.filter(s => state[s] <= 35).map(s => icons[s]).join(' ');
-    el.textContent = `⚠️ ${which} braucht Aufmerksamkeit!`;
+    const which = STAT_NAMES.filter(s => state[s] <= 35).map(s => `${icons[s]} ${labels[s]}`).join(' · ');
+    el.textContent = `⚠️ Lea, denk an: ${which}`;
     el.style.color = 'var(--accent3)';
   } else {
     const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
-    if (avg > 75) { el.textContent = 'Bruno ist topfit! Danke, Lea! 💜'; el.style.color = 'var(--green)'; }
-    else          { el.textContent = 'Alles im grünen Bereich! 👍';       el.style.color = '#b090f0'; }
+    if (avg > 75) { el.textContent = 'Lea kümmert sich super um sich selbst! 💜'; el.style.color = 'var(--green)'; }
+    else          { el.textContent = 'Alles im grünen Bereich! Weiter so, Lea! 👍'; el.style.color = '#b090f0'; }
   }
 }
 

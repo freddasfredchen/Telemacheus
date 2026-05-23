@@ -26,11 +26,11 @@ function feedAction(type) {
   setTimeout(() => btn.classList.remove('pressed'), 200);
 
   const r = {
-    water:    { msg: 'Ahhh! Erfrischend! Danke Lea! 💧😊',                  emoji: '💧', toast: 'Wasser gegeben! 💧' },
-    food:     { msg: 'Nom nom nom! SO GUT! 🥗😋',                            emoji: '🥗', toast: 'Gefüttert! 🥗' },
-    exercise: { msg: 'JA! Sport! Ich liebe Sport! 🏃💪',                    emoji: '🏃', toast: 'Sport gemacht! 🏃' },
-    social:   { msg: 'JA! Endlich! Ich hab dich so vermisst! 💬🥰',          emoji: '💬', toast: 'Gespielt! 💬' },
-    hygiene:  { msg: 'Aaah! Frisch gewaschen! Ich bin wieder ich! 🧼✨',     emoji: '🧼', toast: 'Gewaschen! 🧼' }
+    water:    { msg: 'Ja Lea! Getrunken! Du bist mein Held! 💧✨',           emoji: '💧', toast: 'Getrunken! Weiter so! 💧' },
+    food:     { msg: 'Lea hat gegessen! Das ist das Beste heute! 🥗🎉',      emoji: '🥗', toast: 'Gegessen! Sehr gut! 🥗' },
+    exercise: { msg: 'BEWEGUNG! Lea macht Sport! Ich bin so stolz! 🏃💪',   emoji: '🏃', toast: 'Bewegt! Hammer! 🏃' },
+    social:   { msg: 'Echte Verbindungen! So wichtig! Gut gemacht, Lea! 💬🥰', emoji: '💬', toast: 'Sozial aktiv! 💬' },
+    hygiene:  { msg: 'Lea ist frisch und gepflegt! Selbstfürsorge! 🧼✨',    emoji: '🧼', toast: 'Geduscht! Frisch! 🧼' }
   }[type];
 
   showSpeech(r.msg);
