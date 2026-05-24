@@ -1,4 +1,4 @@
-const CACHE = 'bruno-v3';
+const CACHE = 'bruno-v4';
 
 const ASSETS = [
   './',
@@ -9,6 +9,7 @@ const ASSETS = [
   './js/ui.js',
   './js/progress.js',
   './js/phoenix.js',
+  './js/challenges.js',
   './js/notifications.js',
   './js/main.js',
   './manifest.json',

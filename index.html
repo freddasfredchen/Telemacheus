@@ -31,7 +31,7 @@
       Hallo Lea! Ich freu mich auf unsere Zeit zusammen! 🎉
     </div>
 
-    <div class="bruno-wrap" id="brunoWrap">
+    <div class="bruno-wrap" id="brunoWrap" onclick="tapBruno()" style="cursor:pointer">
       <div class="bruno happy" id="bruno">
         <div class="head">
           <div class="ear left"></div>
@@ -161,6 +161,14 @@
     <div class="calendar-label">Letzte 14 Tage</div>
     <div class="calendar-dots" id="calendarDots"></div>
   </div>
+
+  <div class="challenge-section">
+    <div class="challenge-header">
+      <span class="challenge-title">⚡ Challenges</span>
+      <button class="spin-open-btn" id="spinOpenBtn" onclick="openSpin()">🎰 Drehen!</button>
+    </div>
+    <div class="challenge-list" id="challengeList"></div>
+  </div>
 </div>
 
 <footer>
@@ -179,6 +187,18 @@
   </div>
 </div>
 
+<div class="spin-modal" id="spinModal">
+  <div class="spin-modal-inner">
+    <div class="spin-header">
+      🎰 Täglicher Spin
+      <button class="spin-close-btn" onclick="closeSpin()">✕</button>
+    </div>
+    <div class="spin-display" id="spinDisplay">❓</div>
+    <div class="spin-result" id="spinResult"></div>
+    <button class="spin-do-btn" id="spinDoBtn" onclick="doSpin()">✨ DREHEN!</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="js/config.js"></script>
@@ -186,6 +206,7 @@
 <script src="js/ui.js"></script>
 <script src="js/progress.js"></script>
 <script src="js/phoenix.js"></script>
+<script src="js/challenges.js"></script>
 <script src="js/notifications.js"></script>
 <script src="js/main.js"></script>
 <script>

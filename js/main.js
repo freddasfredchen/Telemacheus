@@ -20,6 +20,7 @@ function feedAction(type) {
   saveState();
   updateBars();
   awardAction(type);
+  onAction(type);
 
   const btnId = 'btn' + type[0].toUpperCase() + type.slice(1);
   const btn = $(btnId);
@@ -134,6 +135,7 @@ function init() {
   if (!isEgg && currentPhase !== 'sleep') startMessageRotation();
 
   setInterval(tick, TICK_INTERVAL);
+  initChallenges();
   initNotifications();
 
   const offlineMin = Math.round(offlineMs / 60000);

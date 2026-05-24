@@ -21,7 +21,9 @@ const DEFAULTS = {
   age: 0, generation: 1, isEgg: false,
   xp: 0, coins: 0, stage: 1, goodDayStreak: 0,
   lastDayRecorded: null, dailyHistory: [],
-  ownedItems: [], equippedItems: []
+  ownedItems: [], equippedItems: [],
+  dailyChallenges: [], lastChallengeDate: null, dailyActionCounts: {},
+  lastSpinDate: null
 };
 
 const DECAY_RATE = {
