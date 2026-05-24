@@ -80,7 +80,10 @@
     </div>
     <div class="progress-row progress-row--sub">
       <span class="streak-display" id="streakDisplay"></span>
-      <button class="shop-open-btn" onclick="openShop()">🛍️ Shop</button>
+      <div class="progress-btns">
+        <button class="notif-toggle-btn" id="notifToggleBtn" onclick="toggleNotifications()" title="Benachrichtigungen einschalten">🔕</button>
+        <button class="shop-open-btn" onclick="openShop()">🛍️ Shop</button>
+      </div>
     </div>
   </div>
 
@@ -183,6 +186,7 @@
 <script src="js/ui.js"></script>
 <script src="js/progress.js"></script>
 <script src="js/phoenix.js"></script>
+<script src="js/notifications.js"></script>
 <script src="js/main.js"></script>
 <script>
   if ('serviceWorker' in navigator) {

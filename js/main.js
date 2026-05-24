@@ -134,6 +134,7 @@ function init() {
   if (!isEgg && currentPhase !== 'sleep') startMessageRotation();
 
   setInterval(tick, TICK_INTERVAL);
+  initNotifications();
 
   const offlineMin = Math.round(offlineMs / 60000);
   if (offlineMin > 5 && !isEgg) {

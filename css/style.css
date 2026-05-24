@@ -632,6 +632,32 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
   color: var(--phoenix);
   min-width: 40px;
 }
+.progress-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.notif-toggle-btn {
+  background: var(--panel2);
+  border: 2px solid var(--panel2);
+  color: #7a5a9a;
+  font-size: 0.85rem;
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition: border-color 0.2s, color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.notif-toggle-btn:hover { background: #4a2d72; }
+.notif-toggle-btn.notif-on {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
 .shop-open-btn {
   background: var(--panel2);
   border: 2px solid var(--accent3);

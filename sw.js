@@ -1,4 +1,4 @@
-const CACHE = 'bruno-v2';
+const CACHE = 'bruno-v3';
 
 const ASSETS = [
   './',
@@ -9,6 +9,7 @@ const ASSETS = [
   './js/ui.js',
   './js/progress.js',
   './js/phoenix.js',
+  './js/notifications.js',
   './js/main.js',
   './manifest.json',
   './icons/icon.svg'
@@ -28,6 +29,16 @@ self.addEventListener('activate', e => {
     )
   );
   self.clients.claim();
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.matchAll({ type: 'window' }).then(list => {
+    for (const c of list) {
+      if (c.url.includes(self.location.origin) && 'focus' in c) return c.focus();
+    }
+    return clients.openWindow('./');
+  }));
 });
 
 self.addEventListener('fetch', e => {
