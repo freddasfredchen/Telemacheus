@@ -53,6 +53,8 @@ function saveState() {
 
 // Walk through phase segments between lastTick and now,
 // applying appropriate multipliers to each segment.
+function getToday() { return new Date().toISOString().slice(0, 10); }
+
 function applyOfflineDecay() {
   const now = Date.now();
   let t = state.lastTick || now;

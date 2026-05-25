@@ -1,9 +1,11 @@
-const CACHE = 'bruno-v4';
+const CACHE = 'bruno-v5';
 
 const ASSETS = [
   './',
   './index.html',
   './css/style.css',
+  './css/bruno.css',
+  './js/assets.js',
   './js/config.js',
   './js/state.js',
   './js/ui.js',

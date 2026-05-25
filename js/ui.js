@@ -1,3 +1,9 @@
+function applyStageClass(stage) {
+  if (!brunoWrap) return;
+  for (var i = 1; i <= 5; i++) brunoWrap.classList.remove('stage-' + i);
+  brunoWrap.classList.add('stage-' + (stage || 1));
+}
+
 const $ = id => document.getElementById(id);
 const brunoEl = $('bruno');
 const brunoWrap = $('brunoWrap');
@@ -65,11 +71,7 @@ function updatePetState() {
   }
   $('genInfo').textContent = `Generation ${state.generation} · ${formatAge(state.age)}`;
 
-  // Apply stage class to brunoWrap
-  if (brunoWrap) {
-    for (let i = 1; i <= 5; i++) brunoWrap.classList.remove('stage-' + i);
-    brunoWrap.classList.add('stage-' + (state.stage || 1));
-  }
+  applyStageClass(state.stage);
 }
 
 function formatAge(m) {

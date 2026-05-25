@@ -17,7 +17,6 @@ function feedAction(type) {
   if (type === 'social')   state.energy = Math.min(100, state.energy + 8);
 
   state[type] = Math.min(100, state[type] + REFILL_AMOUNT);
-  saveState();
   updateBars();
   awardAction(type);
   onAction(type);

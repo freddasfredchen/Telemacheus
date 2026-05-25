@@ -37,10 +37,7 @@ function triggerEvolution(stage) {
   spawnFireParticles();
   showToast('🎉 Bruno ist jetzt ' + STAGE_NAMES[stage - 1] + '!');
   showSpeech('⭐ Level up! Ich bin jetzt ' + STAGE_NAMES[stage - 1] + '! Danke, Lea! 🎉');
-  if (brunoWrap) {
-    for (var i = 1; i <= 5; i++) brunoWrap.classList.remove('stage-' + i);
-    brunoWrap.classList.add('stage-' + stage);
-  }
+  applyStageClass(stage);
 }
 
 function recordDailyScore() {
@@ -211,11 +208,7 @@ function updateProgressUI() {
   var shopCoinsBar = $('shopCoinsBar');
   if (shopCoinsBar) shopCoinsBar.textContent = '💰 ' + (state.coins || 0) + ' Coins';
 
-  // Apply stage class to brunoWrap
-  if (brunoWrap) {
-    for (var i = 1; i <= 5; i++) brunoWrap.classList.remove('stage-' + i);
-    brunoWrap.classList.add('stage-' + stage);
-  }
+  applyStageClass(stage);
 
   renderCalendar();
   renderAccessories();

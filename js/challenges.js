@@ -22,8 +22,6 @@ const SPIN_PRIZES = [
   { label: '🎰 JACKPOT!',  coins: 150, xp: 50 },
 ];
 
-function getToday() { return new Date().toISOString().slice(0, 10); }
-
 // ── Daily Challenges ──
 
 function initChallenges() {
