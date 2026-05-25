@@ -136,7 +136,7 @@ header p.subtitle {
 .btn.hygiene-btn  { border-color: #00b4d8;         box-shadow: 0 4px 0 #005566, 0 0 8px rgba(0,180,216,0.2); }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
 
-/* Sleep overlay */
+/* Sleep overlay covers the button area */
 .sleep-overlay {
   display: none;
   position: absolute;
@@ -218,7 +218,9 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
   align-items: center;
   gap: 8px;
 }
-.progress-row--sub { justify-content: space-between; }
+.progress-row--sub {
+  justify-content: space-between;
+}
 .stage-label {
   font-size: clamp(0.32rem, 1.4vw, 0.44rem);
   color: var(--accent3);
@@ -239,9 +241,21 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
   border-radius: 4px;
   transition: width 0.5s ease;
 }
-.coins-display { font-size: clamp(0.32rem, 1.4vw, 0.44rem); color: var(--accent3); white-space: nowrap; }
-.streak-display { font-size: clamp(0.32rem, 1.4vw, 0.44rem); color: var(--phoenix); min-width: 40px; }
-.progress-btns { display: flex; align-items: center; gap: 6px; }
+.coins-display {
+  font-size: clamp(0.32rem, 1.4vw, 0.44rem);
+  color: var(--accent3);
+  white-space: nowrap;
+}
+.streak-display {
+  font-size: clamp(0.32rem, 1.4vw, 0.44rem);
+  color: var(--phoenix);
+  min-width: 40px;
+}
+.progress-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .notif-toggle-btn {
   background: var(--panel2);
   border: 2px solid var(--panel2);
@@ -259,7 +273,10 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
   -webkit-tap-highlight-color: transparent;
 }
 .notif-toggle-btn:hover { background: #4a2d72; }
-.notif-toggle-btn.notif-on { border-color: var(--accent2); color: var(--accent2); }
+.notif-toggle-btn.notif-on {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
 .shop-open-btn {
   background: var(--panel2);
   border: 2px solid var(--accent3);
@@ -275,19 +292,51 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
 .shop-open-btn:hover { background: #4a2d72; }
 
 /* ── Calendar ── */
-.calendar-section { margin-top: 12px; border-top: 2px solid var(--panel2); padding-top: 10px; }
-.calendar-label { font-size: clamp(0.28rem, 1.2vw, 0.38rem); color: #5a3a7a; margin-bottom: 6px; text-align: center; }
-.calendar-dots { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
-.cal-dot { width: 14px; height: 14px; border-radius: 3px; background: var(--panel2); border: 1px solid #3d2560; }
-.cal-dot.cal-good  { background: var(--green); box-shadow: 0 0 4px rgba(57,255,20,0.5); }
-.cal-dot.cal-ok    { background: var(--accent3); }
-.cal-dot.cal-bad   { background: var(--red); opacity: 0.6; }
-.cal-dot.cal-empty { background: var(--panel2); opacity: 0.4; }
+.calendar-section {
+  margin-top: 12px;
+  border-top: 2px solid var(--panel2);
+  padding-top: 10px;
+}
+.calendar-label {
+  font-size: clamp(0.28rem, 1.2vw, 0.38rem);
+  color: #5a3a7a;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.calendar-dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.cal-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--panel2);
+  border: 1px solid #3d2560;
+}
+.cal-dot.cal-good    { background: var(--green); box-shadow: 0 0 4px rgba(57,255,20,0.5); }
+.cal-dot.cal-ok      { background: var(--accent3); }
+.cal-dot.cal-bad     { background: var(--red); opacity: 0.6; }
+.cal-dot.cal-empty   { background: var(--panel2); opacity: 0.4; }
 
 /* ── Challenges ── */
-.challenge-section { margin-top: 12px; border-top: 2px solid var(--panel2); padding-top: 10px; }
-.challenge-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.challenge-title { font-size: clamp(0.28rem, 1.2vw, 0.38rem); color: var(--accent3); }
+.challenge-section {
+  margin-top: 12px;
+  border-top: 2px solid var(--panel2);
+  padding-top: 10px;
+}
+.challenge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.challenge-title {
+  font-size: clamp(0.28rem, 1.2vw, 0.38rem);
+  color: var(--accent3);
+}
 .spin-open-btn {
   background: var(--panel2);
   border: 2px solid var(--accent1);
@@ -310,7 +359,12 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
   padding: 7px 9px;
 }
 .challenge-item.challenge-done { border-color: var(--green); opacity: 0.8; }
-.challenge-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.challenge-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
 .challenge-name   { font-size: clamp(0.28rem, 1.2vw, 0.36rem); color: #e0d0ff; }
 .challenge-reward { font-size: clamp(0.28rem, 1.2vw, 0.36rem); color: var(--accent3); white-space: nowrap; }
 .challenge-bar-bg {
@@ -486,6 +540,7 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
 }
 .shop-item.equipped { border-color: var(--accent3); box-shadow: 0 0 6px rgba(255,230,109,0.3); }
 .shop-item-name { font-size: clamp(0.35rem, 1.6vw, 0.48rem); color: #e0d0ff; flex: 1; }
+.shop-item-desc { font-size: clamp(0.28rem, 1.2vw, 0.36rem); color: #7a5a9a; flex: 1; display: none; }
 .shop-btn {
   font-family: var(--pixel);
   font-size: clamp(0.28rem, 1.2vw, 0.36rem);
@@ -511,11 +566,31 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
 .shop-list > .shop-cat-header:first-child { margin-top: 0; }
 
 /* ── Stage Backgrounds ── */
-.pet-stage.bg-forest { background: linear-gradient(180deg, #050e05 0%, #0a1a08 60%, #112210 100%); }
-.pet-stage.bg-forest::after { background: repeating-linear-gradient(90deg, #1a3018 0px, #1a3018 8px, #243820 8px, #243820 16px); border-top-color: var(--green); }
-.pet-stage.bg-sunset { background: linear-gradient(180deg, #120500 0%, #251008 50%, #3a1a05 100%); }
-.pet-stage.bg-sunset::after { background: repeating-linear-gradient(90deg, #3a1a00 0px, #3a1a00 8px, #4a2200 8px, #4a2200 16px); border-top-color: var(--phoenix); }
-.pet-stage.bg-ocean { background: linear-gradient(180deg, #000a1a 0%, #001530 60%, #001f42 100%); }
-.pet-stage.bg-ocean::after { background: repeating-linear-gradient(90deg, #001530 0px, #001530 8px, #001f42 8px, #001f42 16px); border-top-color: var(--accent2); }
-.pet-stage.bg-candy { background: linear-gradient(180deg, #1a0025 0%, #2d0040 60%, #3a0050 100%); }
-.pet-stage.bg-candy::after { background: repeating-linear-gradient(90deg, #2d0040 0px, #2d0040 8px, #3a0050 8px, #3a0050 16px); border-top-color: var(--accent1); }
+.pet-stage.bg-forest {
+  background: linear-gradient(180deg, #050e05 0%, #0a1a08 60%, #112210 100%);
+}
+.pet-stage.bg-forest::after {
+  background: repeating-linear-gradient(90deg, #1a3018 0px, #1a3018 8px, #243820 8px, #243820 16px);
+  border-top-color: var(--green);
+}
+.pet-stage.bg-sunset {
+  background: linear-gradient(180deg, #120500 0%, #251008 50%, #3a1a05 100%);
+}
+.pet-stage.bg-sunset::after {
+  background: repeating-linear-gradient(90deg, #3a1a00 0px, #3a1a00 8px, #4a2200 8px, #4a2200 16px);
+  border-top-color: var(--phoenix);
+}
+.pet-stage.bg-ocean {
+  background: linear-gradient(180deg, #000a1a 0%, #001530 60%, #001f42 100%);
+}
+.pet-stage.bg-ocean::after {
+  background: repeating-linear-gradient(90deg, #001530 0px, #001530 8px, #001f42 8px, #001f42 16px);
+  border-top-color: var(--accent2);
+}
+.pet-stage.bg-candy {
+  background: linear-gradient(180deg, #1a0025 0%, #2d0040 60%, #3a0050 100%);
+}
+.pet-stage.bg-candy::after {
+  background: repeating-linear-gradient(90deg, #2d0040 0px, #2d0040 8px, #3a0050 8px, #3a0050 16px);
+  border-top-color: var(--accent1);
+}
