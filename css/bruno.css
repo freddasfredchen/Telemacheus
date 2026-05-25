@@ -398,6 +398,20 @@
 [data-acc="star"]       { top: 2px; left: -20px; font-size: 13px; }
 [data-acc="guitar"]     { position: absolute; bottom: 2px; left: -24px; font-size: 15px; }
 [data-acc="umbrella"]   { position: absolute; bottom: 26px; right: -22px; font-size: 16px; }
+/* Punk / Antifa accessories — head */
+[data-acc="balaclava"]     { top: -6px; left: 50%; transform: translateX(-52%); font-size: 22px; }
+[data-acc="mohawk"]        { top: -22px; left: 50%; transform: translateX(-50%); font-size: 13px; letter-spacing: -1px; }
+[data-acc="gas-mask"]      { top: 20px; left: 50%; transform: translateX(-52%); font-size: 16px; }
+[data-acc="bandana"]       { top: 32px; left: 50%; transform: translateX(-50%); font-size: 14px; }
+[data-acc="anarchy-pin"]   { top: 3px; left: -18px; font-size: 12px; }
+/* Punk / Antifa accessories — body */
+[data-acc="spike-collar"]  { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 14px; }
+[data-acc="black-hoodie"]  { position: absolute; top: 2px; left: 50%; transform: translateX(-50%); font-size: 24px; }
+[data-acc="chain-belt"]    { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 13px; }
+[data-acc="safety-pins"]   { position: absolute; top: 8px; left: 4px; font-size: 11px; }
+[data-acc="spray-can"]     { position: absolute; bottom: 2px; right: -26px; font-size: 18px; }
+[data-acc="brass-knuckles"]{ position: absolute; bottom: 12px; left: -28px; font-size: 15px; }
+[data-acc="black-flag"]    { position: absolute; top: 0px; right: -28px; font-size: 20px; }
 
 /* ── Bruno Palettes (must come after stage-X overrides) ── */
 .bruno-wrap.palette-pink .body, .bruno-wrap.palette-pink .head, .bruno-wrap.palette-pink .ear,
