@@ -134,50 +134,51 @@ header p.subtitle {
 }
 .bruno .ear {
   position: absolute;
-  top: -10px;
-  width: 16px; height: 20px;
+  top: -8px;
+  width: 22px; height: 22px;
   background: var(--accent2);
   border: 3px solid #1a8a99;
-  border-radius: 50% 50% 0 0;
+  border-radius: 50%;
 }
-.bruno .ear.left  { left: 6px; }
-.bruno .ear.right { right: 6px; }
+.bruno .ear.left  { left: -3px; }
+.bruno .ear.right { right: -3px; }
 .bruno .ear::after {
   content: '';
   position: absolute;
   top: 4px; left: 50%;
   transform: translateX(-50%);
-  width: 6px; height: 10px;
+  width: 12px; height: 12px;
   background: var(--accent1);
-  border-radius: 50% 50% 0 0;
-  opacity: 0.6;
+  border-radius: 50%;
+  opacity: 0.55;
 }
 .bruno .eye {
   position: absolute;
-  top: 18px;
-  width: 12px; height: 14px;
+  top: 20px;
+  width: 9px; height: 9px;
   background: #1a0a2e;
   border-radius: 50%;
   border: 2px solid #fff;
 }
-.bruno .eye.left  { left: 10px; }
-.bruno .eye.right { right: 10px; }
+.bruno .eye.left  { left: 11px; }
+.bruno .eye.right { right: 11px; }
 .bruno .eye::after {
   content: '';
   position: absolute;
-  top: 2px; left: 2px;
-  width: 5px; height: 5px;
+  top: 1px; left: 1px;
+  width: 4px; height: 4px;
   background: #fff;
   border-radius: 50%;
 }
 .bruno .nose {
   position: absolute;
-  top: 34px; left: 50%;
+  top: 36px; left: 50%;
   transform: translateX(-50%);
-  width: 8px; height: 5px;
+  width: 10px; height: 6px;
   background: var(--accent1);
   border-radius: 50%;
   border: 1px solid #c05090;
+  box-shadow: 0 0 4px rgba(255,110,199,0.5);
 }
 .bruno .mouth {
   position: absolute;
@@ -190,20 +191,34 @@ header p.subtitle {
 }
 .bruno .cheek {
   position: absolute;
-  top: 30px;
-  width: 12px; height: 8px;
-  background: rgba(255,110,199,0.45);
+  top: 32px;
+  width: 10px; height: 7px;
+  background: rgba(255,110,199,0.35);
   border-radius: 50%;
 }
-.bruno .cheek.left  { left: 4px; }
-.bruno .cheek.right { right: 4px; }
+.bruno .cheek.left  { left: 5px; }
+.bruno .cheek.right { right: 5px; }
+/* Rat whiskers */
+.bruno .whisker {
+  position: absolute;
+  height: 2px;
+  width: 15px;
+  background: rgba(15, 50, 70, 0.45);
+  border-radius: 2px;
+}
+.bruno .whisker.wl1 { top: 35px; left: -9px; transform: rotate(-14deg); transform-origin: right center; }
+.bruno .whisker.wl2 { top: 39px; left: -9px; transform: rotate(0deg);   transform-origin: right center; }
+.bruno .whisker.wl3 { top: 43px; left: -9px; transform: rotate(14deg);  transform-origin: right center; }
+.bruno .whisker.wr1 { top: 35px; right: -9px; transform: rotate(14deg);  transform-origin: left center; }
+.bruno .whisker.wr2 { top: 39px; right: -9px; transform: rotate(0deg);   transform-origin: left center; }
+.bruno .whisker.wr3 { top: 43px; right: -9px; transform: rotate(-14deg); transform-origin: left center; }
 .bruno .tail {
   position: absolute;
-  bottom: 10px; right: -14px;
-  width: 18px; height: 12px;
+  bottom: 8px; right: -46px;
+  width: 50px; height: 6px;
   background: var(--accent2);
-  border: 3px solid #1a8a99;
-  border-radius: 0 50% 50% 0;
+  border: 2px solid #1a8a99;
+  border-radius: 0 6px 6px 0;
   transform-origin: left center;
 }
 
@@ -290,7 +305,7 @@ header p.subtitle {
 .bruno.neutral .eye   { animation: blinkEye 4s ease-in-out infinite; }
 
 .bruno.sad            { animation: sadDroop 2s ease-in-out infinite; }
-.bruno.sad .tail      { animation: none; transform: rotate(-20deg); }
+.bruno.sad .tail      { animation: none; transform: rotate(-15deg); }
 
 .bruno.exercise       { animation: exerciseJump 0.5s ease-in-out infinite; }
 .bruno.exercise .leg.left  { animation: legWalk 0.25s ease-in-out infinite; }
@@ -524,7 +539,7 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
   border-top: none;
   border-radius: 0 0 10px 10px;
 }
-.bruno.sleeping .tail { animation: none; transform: rotate(-15deg); }
+.bruno.sleeping .tail { animation: none; transform: rotate(-10deg); }
 .bruno.sleeping .arm.left  { transform: rotate(55deg); }
 .bruno.sleeping .arm.right { transform: rotate(-55deg); }
 

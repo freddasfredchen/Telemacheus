@@ -126,7 +126,7 @@ const MESSAGES = {
     crit: [
       "LEA! Ruf jetzt jemanden an! Das ist Ernst! 📞🚨",
       "Soziale Isolation schadet wirklich, Lea! Schreib jetzt einer Freundin! 💔📱",
-      "Ich bin nur ein Pixel-Tier. Du brauchst echte Menschen. JETZT anrufen! 🐾→👥",
+      "Ich bin nur eine Pixel-Ratte. Du brauchst echte Menschen. JETZT anrufen! 🐀→👥",
       "SOZIALER NOTFALL: Handy nehmen, Kontakt wählen, sprechen. LOS! 🚨",
       "Lea, echte Menschen sind wichtiger als ich. Geh zu ihnen! 📞💬"
     ]
