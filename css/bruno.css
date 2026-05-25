@@ -1,7 +1,7 @@
 /* ── Bruno ── */
 .bruno {
   position: relative;
-  width: 80px; height: 90px;
+  width: 80px; height: 96px;
   margin-bottom: 30px;
   z-index: 2;
   transition: filter 0.4s;
@@ -10,9 +10,9 @@
   position: absolute;
   bottom: 0; left: 50%;
   transform: translateX(-50%);
-  width: 56px; height: 52px;
+  width: 58px; height: 62px;
   background: var(--accent2);
-  border-radius: 40% 40% 30% 30% / 50% 50% 40% 40%;
+  border-radius: 48% 48% 28% 28% / 42% 42% 52% 52%;
   border: 3px solid #1a8a99;
   box-shadow: inset -6px -6px 0 rgba(0,0,0,0.15);
 }
@@ -41,28 +41,28 @@
   position: absolute;
   top: 0; left: 50%;
   transform: translateX(-50%);
-  width: 62px; height: 58px;
+  width: 60px; height: 66px;
   background: var(--accent2);
-  border-radius: 50% 50% 44% 44% / 54% 54% 46% 46%;
+  border-radius: 50% 50% 36% 36% / 46% 46% 62% 62%;
   border: 3px solid #1a8a99;
   box-shadow: inset -6px -6px 0 rgba(0,0,0,0.1);
 }
 .bruno .ear {
   position: absolute;
-  top: -8px;
-  width: 22px; height: 22px;
+  top: -5px;
+  width: 15px; height: 15px;
   background: var(--accent2);
-  border: 3px solid #1a8a99;
+  border: 2px solid #1a8a99;
   border-radius: 50%;
 }
-.bruno .ear.left  { left: -3px; }
-.bruno .ear.right { right: -3px; }
+.bruno .ear.left  { left: 2px; }
+.bruno .ear.right { right: 2px; }
 .bruno .ear::after {
   content: '';
   position: absolute;
-  top: 4px; left: 50%;
+  top: 3px; left: 50%;
   transform: translateX(-50%);
-  width: 12px; height: 12px;
+  width: 8px; height: 8px;
   background: var(--accent1);
   border-radius: 50%;
   opacity: 0.55;
@@ -70,24 +70,26 @@
 .bruno .eye {
   position: absolute;
   top: 20px;
-  width: 9px; height: 9px;
-  background: #1a0a2e;
+  width: 8px; height: 8px;
+  background: #080808;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 1.5px solid rgba(255,255,255,0.65);
+  box-shadow: inset 0 0 3px rgba(255,255,255,0.12);
 }
-.bruno .eye.left  { left: 11px; }
-.bruno .eye.right { right: 11px; }
+.bruno .eye.left  { left: 12px; }
+.bruno .eye.right { right: 12px; }
 .bruno .eye::after {
   content: '';
   position: absolute;
   top: 1px; left: 1px;
-  width: 4px; height: 4px;
+  width: 3px; height: 3px;
   background: #fff;
   border-radius: 50%;
+  box-shadow: 2px 2px 0 0.5px rgba(255,255,255,0.4);
 }
 .bruno .nose {
   position: absolute;
-  top: 36px; left: 50%;
+  top: 44px; left: 50%;
   transform: translateX(-50%);
   width: 10px; height: 6px;
   background: var(--accent1);
@@ -106,7 +108,7 @@
 }
 .bruno .cheek {
   position: absolute;
-  top: 32px;
+  top: 40px;
   width: 10px; height: 7px;
   background: rgba(255,110,199,0.35);
   border-radius: 50%;
@@ -121,12 +123,12 @@
   background: rgba(15, 50, 70, 0.45);
   border-radius: 2px;
 }
-.bruno .whisker.wl1 { top: 35px; left: -9px; transform: rotate(-14deg); transform-origin: right center; }
-.bruno .whisker.wl2 { top: 39px; left: -9px; transform: rotate(0deg);   transform-origin: right center; }
-.bruno .whisker.wl3 { top: 43px; left: -9px; transform: rotate(14deg);  transform-origin: right center; }
-.bruno .whisker.wr1 { top: 35px; right: -9px; transform: rotate(14deg);  transform-origin: left center; }
-.bruno .whisker.wr2 { top: 39px; right: -9px; transform: rotate(0deg);   transform-origin: left center; }
-.bruno .whisker.wr3 { top: 43px; right: -9px; transform: rotate(-14deg); transform-origin: left center; }
+.bruno .whisker.wl1 { top: 43px; left: -9px; transform: rotate(-14deg); transform-origin: right center; }
+.bruno .whisker.wl2 { top: 47px; left: -9px; transform: rotate(0deg);   transform-origin: right center; }
+.bruno .whisker.wl3 { top: 51px; left: -9px; transform: rotate(14deg);  transform-origin: right center; }
+.bruno .whisker.wr1 { top: 43px; right: -9px; transform: rotate(14deg);  transform-origin: left center; }
+.bruno .whisker.wr2 { top: 47px; right: -9px; transform: rotate(0deg);   transform-origin: left center; }
+.bruno .whisker.wr3 { top: 51px; right: -9px; transform: rotate(-14deg); transform-origin: left center; }
 .bruno .tail {
   position: absolute;
   bottom: 8px; right: -46px;
@@ -162,7 +164,8 @@
 @keyframes legWalk     { 0%,100%{transform:rotate(0deg)}        50%{transform:rotate(20deg)} }
 @keyframes armRaise    { 0%,100%{transform:rotate(20deg)}       50%{transform:rotate(-30deg)} }
 @keyframes armRaiseR   { 0%,100%{transform:rotate(-20deg)}      50%{transform:rotate(30deg)} }
-@keyframes blinkEye    { 0%,90%,100%{transform:scaleY(1)}       95%{transform:scaleY(0.1)} }
+@keyframes blinkEye      { 0%,90%,100%{transform:scaleY(1)}                        95%{transform:scaleY(0.1)} }
+@keyframes blinkEyeHappy { 0%,90%,100%{transform:scale(1.32) scaleY(1)}            95%{transform:scale(1.32) scaleY(0.1)} }
 @keyframes exerciseJump{ 0%,100%{transform:translateY(0)}       30%{transform:translateY(-20px)} 60%{transform:translateY(-8px)} }
 @keyframes float       { 0%,100%{transform:translateY(0px)}     50%{transform:translateY(-5px)} }
 @keyframes sparkle     { 0%{opacity:0;transform:scale(0) rotate(0deg)} 50%{opacity:1;transform:scale(1.2) rotate(180deg)} 100%{opacity:0;transform:scale(0) rotate(360deg)} }
@@ -211,7 +214,7 @@
 /* State animations */
 .bruno.happy          { animation: bounce 0.7s ease-in-out infinite; }
 .bruno.happy .tail    { animation: tailWag 0.3s ease-in-out infinite; }
-.bruno.happy .eye     { animation: blinkEye 3s ease-in-out infinite; }
+.bruno.happy .eye     { animation: blinkEyeHappy 3s ease-in-out infinite; }
 .bruno.happy .arm.left  { animation: armRaise  0.7s ease-in-out infinite; }
 .bruno.happy .arm.right { animation: armRaiseR 0.7s ease-in-out infinite; }
 
