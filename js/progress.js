@@ -72,6 +72,11 @@ function recordDailyScore() {
 function buyItem(id) {
   var owned = state.ownedItems || [];
   if (owned.indexOf(id) !== -1) {
+    var item0 = null;
+    for (var j = 0; j < SHOP_ITEMS.length; j++) { if (SHOP_ITEMS[j].id === id) { item0 = SHOP_ITEMS[j]; break; } }
+    if (!item0) return;
+    if (item0.type === 'background') { selectBackground(id); return; }
+    if (item0.type === 'palette')    { selectPalette(id);    return; }
     toggleItem(id);
     return;
   }
@@ -87,15 +92,20 @@ function buyItem(id) {
   state.coins = (state.coins || 0) - item.cost;
   owned.push(id);
   state.ownedItems = owned;
-  // Auto-equip on purchase
-  var equipped = state.equippedItems || [];
-  equipped.push(id);
-  state.equippedItems = equipped;
+  if (item.type === 'background') {
+    state.activeBackground = id;
+  } else if (item.type === 'palette') {
+    state.activePalette = id;
+  } else {
+    var equipped = state.equippedItems || [];
+    equipped.push(id);
+    state.equippedItems = equipped;
+  }
   saveState();
   renderAccessories();
   updateProgressUI();
   renderShop();
-  showToast('🎉 ' + item.name + ' gekauft und angelegt!');
+  showToast('🎉 ' + item.name + ' aktiviert!');
 }
 
 function toggleItem(id) {
@@ -112,12 +122,32 @@ function toggleItem(id) {
   renderShop();
 }
 
+function selectBackground(id) {
+  state.activeBackground = state.activeBackground === id ? null : id;
+  saveState(); renderAccessories(); renderShop();
+}
+
+function selectPalette(id) {
+  state.activePalette = state.activePalette === id ? null : id;
+  saveState(); renderAccessories(); renderShop();
+}
+
 function renderAccessories() {
   var equipped = state.equippedItems || [];
   document.querySelectorAll('.bruno-acc').forEach(function(el) {
     var acc = el.getAttribute('data-acc');
     el.style.display = equipped.indexOf(acc) !== -1 ? 'block' : 'none';
   });
+  var petStage = $('petStage');
+  if (petStage) {
+    petStage.classList.remove('bg-forest', 'bg-sunset', 'bg-ocean', 'bg-candy');
+    if (state.activeBackground) petStage.classList.add(state.activeBackground);
+  }
+  var wrap = $('brunoWrap');
+  if (wrap) {
+    wrap.classList.remove('palette-pink', 'palette-green', 'palette-gold', 'palette-dark');
+    if (state.activePalette) wrap.classList.add(state.activePalette);
+  }
 }
 
 function renderCalendar() {
@@ -213,40 +243,67 @@ function renderShop() {
   var coins    = state.coins         || 0;
 
   list.innerHTML = '';
-  SHOP_ITEMS.forEach(function(item) {
-    var isOwned    = owned.indexOf(item.id) !== -1;
-    var isEquipped = equipped.indexOf(item.id) !== -1;
 
-    var div = document.createElement('div');
-    div.className = 'shop-item' + (isEquipped ? ' equipped' : '');
+  var CATS = [
+    { type: 'accessory',  label: '🎭 Accessoires'  },
+    { type: 'palette',    label: '🎨 Bruno-Farbe'   },
+    { type: 'background', label: '🖼️ Bühnen-Thema' },
+  ];
 
-    var nameSpan = document.createElement('span');
-    nameSpan.className = 'shop-item-name';
-    nameSpan.textContent = item.name;
+  CATS.forEach(function(cat) {
+    var catItems = SHOP_ITEMS.filter(function(i) { return (i.type || 'accessory') === cat.type; });
+    if (!catItems.length) return;
 
-    var btn = document.createElement('button');
-    btn.className = 'shop-btn';
+    var hdr = document.createElement('div');
+    hdr.className = 'shop-cat-header';
+    hdr.textContent = cat.label;
+    list.appendChild(hdr);
 
-    if (isOwned && isEquipped) {
-      btn.className += ' shop-btn--unequip';
-      btn.textContent = 'Ablegen';
-      btn.onclick = (function(id) { return function() { toggleItem(id); }; })(item.id);
-    } else if (isOwned && !isEquipped) {
-      btn.className += ' shop-btn--equip';
-      btn.textContent = 'Anlegen';
-      btn.onclick = (function(id) { return function() { toggleItem(id); }; })(item.id);
-    } else if (coins >= item.cost) {
-      btn.className += ' shop-btn--buy';
-      btn.textContent = 'Kaufen ' + item.cost + ' 💰';
-      btn.onclick = (function(id) { return function() { buyItem(id); }; })(item.id);
-    } else {
-      btn.className += ' shop-btn--locked';
-      btn.textContent = item.cost + ' 💰';
-      btn.disabled = true;
-    }
+    catItems.forEach(function(item) {
+      var isOwned  = owned.indexOf(item.id) !== -1;
+      var isActive = cat.type === 'background' ? state.activeBackground === item.id
+                   : cat.type === 'palette'    ? state.activePalette    === item.id
+                   : equipped.indexOf(item.id) !== -1;
 
-    div.appendChild(nameSpan);
-    div.appendChild(btn);
-    list.appendChild(div);
+      var div = document.createElement('div');
+      div.className = 'shop-item' + (isActive ? ' equipped' : '');
+
+      var nameSpan = document.createElement('span');
+      nameSpan.className = 'shop-item-name';
+      nameSpan.textContent = item.name;
+
+      var btn = document.createElement('button');
+      btn.className = 'shop-btn';
+
+      if (isOwned && isActive) {
+        btn.className += ' shop-btn--unequip';
+        btn.textContent = cat.type === 'accessory' ? 'Ablegen' : 'Aktiv ✓';
+        btn.onclick = (function(id, t) { return function() {
+          if (t === 'background') selectBackground(id);
+          else if (t === 'palette') selectPalette(id);
+          else toggleItem(id);
+        }; })(item.id, cat.type);
+      } else if (isOwned && !isActive) {
+        btn.className += ' shop-btn--equip';
+        btn.textContent = cat.type === 'accessory' ? 'Anlegen' : 'Aktivieren';
+        btn.onclick = (function(id, t) { return function() {
+          if (t === 'background') selectBackground(id);
+          else if (t === 'palette') selectPalette(id);
+          else toggleItem(id);
+        }; })(item.id, cat.type);
+      } else if (coins >= item.cost) {
+        btn.className += ' shop-btn--buy';
+        btn.textContent = 'Kaufen ' + item.cost + ' 💰';
+        btn.onclick = (function(id) { return function() { buyItem(id); }; })(item.id);
+      } else {
+        btn.className += ' shop-btn--locked';
+        btn.textContent = item.cost + ' 💰';
+        btn.disabled = true;
+      }
+
+      div.appendChild(nameSpan);
+      div.appendChild(btn);
+      list.appendChild(div);
+    });
   });
 }

@@ -7,12 +7,27 @@ const GOOD_DAY_BONUS_COINS = 20;
 const STAGE_THRESHOLDS = [0, 150, 400, 800, 1500]; // XP for stages 1–5
 const STAGE_NAMES = ['Baby 🐣', 'Teen 🐾', 'Erwachsen 💪', 'Fit ⚡', 'Legende 👑'];
 const SHOP_ITEMS = [
-  { id: 'hat',        name: '🎩 Schicker Hut',    cost: 50,  desc: 'Für das gewisse Etwas' },
-  { id: 'sunglasses', name: '😎 Sonnenbrille',     cost: 75,  desc: 'Cool bleiben' },
-  { id: 'flower',     name: '🌸 Blume',            cost: 30,  desc: 'Immer Frühling' },
-  { id: 'lightning',  name: '⚡ Energie-Aura',     cost: 100, desc: 'Für echte Power-Leas' },
-  { id: 'butterfly',  name: '🦋 Schmetterling',    cost: 80,  desc: 'Leicht und frei' },
-  { id: 'crown',      name: '👑 Krone',            cost: 200, desc: 'Nur für Legenden' }
+  // Accessoires
+  { id: 'hat',        name: '🎩 Schicker Hut',    cost: 50,  type: 'accessory', desc: 'Für das gewisse Etwas' },
+  { id: 'sunglasses', name: '😎 Sonnenbrille',     cost: 75,  type: 'accessory', desc: 'Cool bleiben' },
+  { id: 'flower',     name: '🌸 Blume',            cost: 30,  type: 'accessory', desc: 'Immer Frühling' },
+  { id: 'bow',        name: '🎀 Schleife',         cost: 45,  type: 'accessory', desc: 'Süß und stylish' },
+  { id: 'star',       name: '⭐ Stern',            cost: 40,  type: 'accessory', desc: 'Ein Star wie Lea' },
+  { id: 'lightning',  name: '⚡ Energie-Aura',     cost: 100, type: 'accessory', desc: 'Für echte Power-Leas' },
+  { id: 'butterfly',  name: '🦋 Schmetterling',    cost: 80,  type: 'accessory', desc: 'Leicht und frei' },
+  { id: 'guitar',     name: '🎸 Gitarre',          cost: 90,  type: 'accessory', desc: 'Rock on, Bruno!' },
+  { id: 'umbrella',   name: '🌂 Regenschirm',      cost: 60,  type: 'accessory', desc: 'Immer bereit!' },
+  { id: 'crown',      name: '👑 Krone',            cost: 200, type: 'accessory', desc: 'Nur für Legenden' },
+  // Bruno-Farben
+  { id: 'palette-pink',  name: '🩷 Rosa Ratte',   cost: 80,  type: 'palette',    desc: 'Knalliges Pink' },
+  { id: 'palette-green', name: '💚 Grüne Ratte',  cost: 80,  type: 'palette',    desc: 'Frisches Grün' },
+  { id: 'palette-gold',  name: '✨ Gold Ratte',    cost: 120, type: 'palette',    desc: 'Edel und golden' },
+  { id: 'palette-dark',  name: '🖤 Dunkle Ratte', cost: 100, type: 'palette',    desc: 'Mysteriös dunkel' },
+  // Bühnen-Themen
+  { id: 'bg-forest', name: '🌲 Wald',             cost: 75,  type: 'background', desc: 'Tiefgrüner Wald' },
+  { id: 'bg-sunset', name: '🌅 Sonnenuntergang',  cost: 75,  type: 'background', desc: 'Warme Abendfarben' },
+  { id: 'bg-ocean',  name: '🌊 Ozean',            cost: 80,  type: 'background', desc: 'Tief und ruhig' },
+  { id: 'bg-candy',  name: '🍬 Candy',            cost: 85,  type: 'background', desc: 'Pink und süß' },
 ];
 
 const DEFAULTS = {
@@ -22,6 +37,7 @@ const DEFAULTS = {
   xp: 0, coins: 0, stage: 1, goodDayStreak: 0,
   lastDayRecorded: null, dailyHistory: [],
   ownedItems: [], equippedItems: [],
+  activeBackground: null, activePalette: null,
   dailyChallenges: [], lastChallengeDate: null, dailyActionCounts: {},
   lastSpinDate: null
 };
