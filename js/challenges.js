@@ -11,6 +11,8 @@ const CHALLENGE_POOL = [
   { id: 'w2f2',      stat: '__w2f2__', target: 4, label: '💧🥗 2x Trinken & 2x Essen', reward: 35 },
 ];
 
+const CHALLENGE_BY_ID = CHALLENGE_POOL.reduce((m, c) => { m[c.id] = c; return m; }, {});
+
 const SPIN_PRIZES = [
   { label: '💰 10 Coins',  coins: 10,  xp: 0  },
   { label: '⭐ 15 XP',     coins: 0,   xp: 15 },
@@ -46,7 +48,7 @@ function onAction(type) {
   let anyCompleted = false;
   state.dailyChallenges.forEach(ch => {
     if (ch.completed) return;
-    const def = CHALLENGE_POOL.find(c => c.id === ch.id);
+    const def = CHALLENGE_BY_ID[ch.id];
     if (!def) return;
 
     let p = ch.progress || 0;
@@ -79,7 +81,7 @@ function renderChallenges() {
   if (!container || !state.dailyChallenges) return;
   container.innerHTML = '';
   state.dailyChallenges.forEach(ch => {
-    const def = CHALLENGE_POOL.find(c => c.id === ch.id);
+    const def = CHALLENGE_BY_ID[ch.id];
     if (!def) return;
     const pct = Math.min(100, Math.round(((ch.progress || 0) / def.target) * 100));
     const el  = document.createElement('div');

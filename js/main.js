@@ -2,6 +2,14 @@ let exerciseAnimTimeout = null;
 let zzzInterval = null;
 let currentPhase = null;
 
+const ACTION_REACTIONS = {
+  water:    { msg: 'Ja Lea! Getrunken! Du bist mein Held! 💧✨',           emoji: '💧', toast: 'Getrunken! Weiter so! 💧' },
+  food:     { msg: 'Lea hat gegessen! Das ist das Beste heute! 🥗🎉',      emoji: '🥗', toast: 'Gegessen! Sehr gut! 🥗' },
+  exercise: { msg: 'BEWEGUNG! Lea macht Sport! Ich bin so stolz! 🏃💪',   emoji: '🏃', toast: 'Bewegt! Hammer! 🏃' },
+  social:   { msg: 'Echte Verbindungen! So wichtig! Gut gemacht, Lea! 💬🥰', emoji: '💬', toast: 'Sozial aktiv! 💬' },
+  hygiene:  { msg: 'Lea ist frisch und gepflegt! Selbstfürsorge! 🧼✨',    emoji: '🧼', toast: 'Geduscht! Frisch! 🧼' }
+};
+
 function feedAction(type) {
   if (isEgg || phoenixPending) {
     showToast('🥚 Bruno schläft im Ei. Warte auf das Schlüpfen!');
@@ -26,13 +34,7 @@ function feedAction(type) {
   btn.classList.add('pressed');
   setTimeout(() => btn.classList.remove('pressed'), 200);
 
-  const r = {
-    water:    { msg: 'Ja Lea! Getrunken! Du bist mein Held! 💧✨',           emoji: '💧', toast: 'Getrunken! Weiter so! 💧' },
-    food:     { msg: 'Lea hat gegessen! Das ist das Beste heute! 🥗🎉',      emoji: '🥗', toast: 'Gegessen! Sehr gut! 🥗' },
-    exercise: { msg: 'BEWEGUNG! Lea macht Sport! Ich bin so stolz! 🏃💪',   emoji: '🏃', toast: 'Bewegt! Hammer! 🏃' },
-    social:   { msg: 'Echte Verbindungen! So wichtig! Gut gemacht, Lea! 💬🥰', emoji: '💬', toast: 'Sozial aktiv! 💬' },
-    hygiene:  { msg: 'Lea ist frisch und gepflegt! Selbstfürsorge! 🧼✨',    emoji: '🧼', toast: 'Geduscht! Frisch! 🧼' }
-  }[type];
+  const r = ACTION_REACTIONS[type];
 
   showSpeech(r.msg);
   showToast(r.toast);

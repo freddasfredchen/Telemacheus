@@ -26,7 +26,7 @@ function getMood() {
   if (isEgg || phoenixPending) return phoenixPending ? 'phoenix' : 'egg';
   if (getTimePhase() === 'sleep') return 'sleeping';
   const min = Math.min(state.water, state.food, state.energy);
-  const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
+  const avg = statAvg();
   if (min <= 15 || avg < 25) return 'sad';
   if (min > 60 && avg > 70)  return 'happy';
   return 'neutral';
@@ -54,7 +54,7 @@ function updatePetState() {
   $('sleepOverlay').style.display = sleeping ? 'flex' : 'none';
   document.querySelectorAll('.btn').forEach(b => { b.disabled = sleeping; });
 
-  const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
+  const avg = statAvg();
   const dots = Math.max(1, Math.round(avg / 20));
   for (let i = 1; i <= 5; i++) $(`md${i}`).classList.toggle('active', i <= dots && !sleeping);
 
@@ -124,19 +124,17 @@ function updateStatusMsg() {
     el.style.color = 'var(--accent2)';
     return;
   }
-  const icons = { water: '💧', food: '🥗', exercise: '🏃', energy: '⚡', social: '💬', hygiene: '🧼' };
   const labels = { water: 'Trinken', food: 'Essen', exercise: 'Bewegen', energy: 'Schlafen', social: 'Verbindungen', hygiene: 'Duschen' };
-  const min = Math.min(...STAT_NAMES.map(s => state[s]));
+  const min = statMin();
   if (min <= 15) {
     el.textContent = '🚨 Lea braucht jetzt sofort Selbstfürsorge!';
     el.style.color = 'var(--red)';
   } else if (min <= 35) {
-    const which = STAT_NAMES.filter(s => state[s] <= 35).map(s => `${icons[s]} ${labels[s]}`).join(' · ');
+    const which = STAT_NAMES.filter(s => state[s] <= 35).map(s => `${STAT_ICONS[s]} ${labels[s]}`).join(' · ');
     el.textContent = `⚠️ Lea, denk an: ${which}`;
     el.style.color = 'var(--accent3)';
   } else {
-    const avg = STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length;
-    if (avg > 75) { el.textContent = 'Lea kümmert sich super um sich selbst! 💜'; el.style.color = 'var(--green)'; }
+    if (statAvg() > 75) { el.textContent = 'Lea kümmert sich super um sich selbst! 💜'; el.style.color = 'var(--green)'; }
     else          { el.textContent = 'Alles im grünen Bereich! Weiter so, Lea! 👍'; el.style.color = '#b090f0'; }
   }
 }

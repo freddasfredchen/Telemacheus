@@ -360,8 +360,6 @@
 .bruno-wrap.stage-4 { transform: scale(1.12); }
 .bruno-wrap.stage-5 { transform: scale(1.22); }
 
-.bruno { margin-bottom: 30px; }
-
 /* Stage body color overrides */
 .bruno-wrap.stage-1 .body, .bruno-wrap.stage-1 .head, .bruno-wrap.stage-1 .ear,
 .bruno-wrap.stage-1 .leg,  .bruno-wrap.stage-1 .arm,  .bruno-wrap.stage-1 .tail {
