@@ -133,7 +133,19 @@ function renderAccessories() {
   var equipped = state.equippedItems || [];
   document.querySelectorAll('.bruno-acc').forEach(function(el) {
     var acc = el.getAttribute('data-acc');
-    el.style.display = equipped.indexOf(acc) !== -1 ? 'block' : 'none';
+    var show = equipped.indexOf(acc) !== -1;
+    el.style.display = show ? 'block' : 'none';
+    if (show) {
+      var imgSrc = getItemImage(acc);
+      if (imgSrc && !el.querySelector('img')) {
+        el.innerHTML = '';
+        var img = document.createElement('img');
+        img.src = imgSrc;
+        img.alt = '';
+        img.style.cssText = 'width:28px;height:28px;object-fit:contain;display:block;';
+        el.appendChild(img);
+      }
+    }
   });
   var petStage = $('petStage');
   if (petStage) {
