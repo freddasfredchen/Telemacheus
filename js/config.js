@@ -1,4 +1,5 @@
 const STAT_NAMES = ['water', 'food', 'exercise', 'energy', 'social', 'hygiene'];
+const STAT_ICONS = { water: '💧', food: '🥗', exercise: '🏃', energy: '⚡', social: '💬', hygiene: '🧼' };
 
 const XP_PER_ACTION   = { water: 8, food: 10, exercise: 15, social: 8, hygiene: 8 };
 const COIN_PER_ACTION = { water: 5, food:  6, exercise: 10, social: 5, hygiene: 5 };
@@ -226,5 +227,8 @@ const MESSAGES = {
     ]
   }
 };
+
+// Fast id → item lookup (avoids repeated linear scans through SHOP_ITEMS)
+const SHOP_BY_ID = SHOP_ITEMS.reduce((m, item) => { m[item.id] = item; return m; }, {});
 
 function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }

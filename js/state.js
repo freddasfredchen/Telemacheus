@@ -51,10 +51,14 @@ function saveState() {
   localStorage.setItem('bruno_state', JSON.stringify(state));
 }
 
-// Walk through phase segments between lastTick and now,
-// applying appropriate multipliers to each segment.
 function getToday() { return new Date().toISOString().slice(0, 10); }
 
+// Aggregate helpers over the six care stats.
+function statAvg() { return STAT_NAMES.reduce((a, s) => a + state[s], 0) / STAT_NAMES.length; }
+function statMin() { return Math.min(...STAT_NAMES.map(s => state[s])); }
+
+// Walk through phase segments between lastTick and now,
+// applying appropriate multipliers to each segment.
 function applyOfflineDecay() {
   const now = Date.now();
   let t = state.lastTick || now;

@@ -66,30 +66,21 @@ function checkAndNotify() {
   if (getTimePhase() === 'sleep') return;
 
   const now   = Date.now();
-  const icons = { water: '💧', food: '🥗', exercise: '🏃', energy: '⚡', social: '💬', hygiene: '🧼' };
   const names = { water: 'Trinken', food: 'Essen', exercise: 'Bewegen', energy: 'Energie', social: 'Soziales', hygiene: 'Hygiene' };
 
   STAT_NAMES.forEach(stat => {
     if (now - (notifCooldowns[stat] || 0) < NOTIF_COOLDOWN_MS) return;
 
     const v = state[stat];
+    if (v > 35) return;
+
     if (v <= 15) {
-      sendNotif(
-        `🚨 ${icons[stat]} ${names[stat]}: KRITISCH!`,
-        rand(MESSAGES[stat].crit),
-        `stat-${stat}`
-      );
-      notifCooldowns[stat] = now;
-      saveNotifSettings();
-    } else if (v <= 35) {
-      sendNotif(
-        `⚠️ ${icons[stat]} ${names[stat]} wird niedrig`,
-        rand(MESSAGES[stat].low),
-        `stat-${stat}`
-      );
-      notifCooldowns[stat] = now;
-      saveNotifSettings();
+      sendNotif(`🚨 ${STAT_ICONS[stat]} ${names[stat]}: KRITISCH!`, rand(MESSAGES[stat].crit), `stat-${stat}`);
+    } else {
+      sendNotif(`⚠️ ${STAT_ICONS[stat]} ${names[stat]} wird niedrig`, rand(MESSAGES[stat].low), `stat-${stat}`);
     }
+    notifCooldowns[stat] = now;
+    saveNotifSettings();
   });
 }
 

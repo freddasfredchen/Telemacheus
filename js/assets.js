@@ -20,8 +20,14 @@
 // ITEM_IMAGES['brass-knuckles'] = './assets/items/brass-knuckles.svg';
 // ITEM_IMAGES['black-flag']     = './assets/items/black-flag.svg';
 
+// Bruno-Sprites — 4 Zustände (auskommentieren & Pfad anpassen zum Aktivieren):
+// BRUNO_SKINS['idle']   = './assets/bruno/idle.png';    // Stehen / Atmen / Neutral / Schlafen
+// BRUNO_SKINS['happy']  = './assets/bruno/happy.png';   // Freude / Hochspringen
+// BRUNO_SKINS['walk-r'] = './assets/bruno/walk-r.png';  // Mission: läuft nach rechts
+// BRUNO_SKINS['walk-l'] = './assets/bruno/walk-l.png';  // Rückkehr: läuft nach links (optional — walk-r wird automatisch gespiegelt wenn nicht gesetzt)
+
 var ITEM_IMAGES  = {};  // Shop-Item-ID → Bildpfad (ersetzt Emoji-Label)
-var BRUNO_SKINS  = {};  // Palette-ID oder 'default' → Bildpfad (ersetzt CSS-Bruno)
+var BRUNO_SKINS  = {};  // Skin-Key → Bildpfad (ersetzt CSS-Bruno)
 var BG_IMAGES    = {};  // Background-ID → Bildpfad (ersetzt CSS-Gradient)
 
 function getItemImage(id)  { return ITEM_IMAGES[id]  || null; }

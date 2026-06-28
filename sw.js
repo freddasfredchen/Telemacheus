@@ -1,4 +1,4 @@
-const CACHE = 'bruno-v5';
+const CACHE = 'bruno-v6';
 
 const ASSETS = [
   './',

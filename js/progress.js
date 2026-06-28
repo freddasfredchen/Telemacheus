@@ -41,12 +41,12 @@ function triggerEvolution(stage) {
 }
 
 function recordDailyScore() {
-  var today = new Date().toISOString().slice(0, 10);
+  var today = getToday();
   if (state.lastDayRecorded === today) return;
 
   // Only record if there's a previous day (not first ever load)
   if (state.lastDayRecorded !== null) {
-    var avg = STAT_NAMES.reduce(function(a, s) { return a + (state[s] || 0); }, 0) / STAT_NAMES.length;
+    var avg = statAvg();
     var history = state.dailyHistory || [];
     history.push({ date: state.lastDayRecorded, score: avg });
     if (history.length > 14) history = history.slice(history.length - 14);
@@ -66,22 +66,18 @@ function recordDailyScore() {
   updateProgressUI();
 }
 
+// Activate/deactivate an already-owned item according to its type.
+function applyItem(id, type) {
+  if (type === 'background')   selectBackground(id);
+  else if (type === 'palette') selectPalette(id);
+  else                         toggleItem(id);
+}
+
 function buyItem(id) {
-  var owned = state.ownedItems || [];
-  if (owned.indexOf(id) !== -1) {
-    var item0 = null;
-    for (var j = 0; j < SHOP_ITEMS.length; j++) { if (SHOP_ITEMS[j].id === id) { item0 = SHOP_ITEMS[j]; break; } }
-    if (!item0) return;
-    if (item0.type === 'background') { selectBackground(id); return; }
-    if (item0.type === 'palette')    { selectPalette(id);    return; }
-    toggleItem(id);
-    return;
-  }
-  var item = null;
-  for (var i = 0; i < SHOP_ITEMS.length; i++) {
-    if (SHOP_ITEMS[i].id === id) { item = SHOP_ITEMS[i]; break; }
-  }
+  var item = SHOP_BY_ID[id];
   if (!item) return;
+  var owned = state.ownedItems || [];
+  if (owned.indexOf(id) !== -1) { applyItem(id, item.type); return; }
   if ((state.coins || 0) < item.cost) {
     showToast('💸 Nicht genug Coins! (' + item.cost + ' benötigt)');
     return;
@@ -164,20 +160,16 @@ function renderCalendar() {
   if (!dotsEl) return;
   dotsEl.innerHTML = '';
   var history = state.dailyHistory || [];
-  // Build last 14 days array (oldest first)
-  var slots = [];
+  var byDate = {};
+  history.forEach(function(h) { byDate[h.date] = h; });
+  // Build last 14 days (oldest first)
   for (var i = 13; i >= 0; i--) {
     var d = new Date();
     d.setDate(d.getDate() - i);
-    slots.push(d.toISOString().slice(0, 10));
-  }
-  slots.forEach(function(date) {
+    var date = d.toISOString().slice(0, 10);
     var dot = document.createElement('div');
     dot.className = 'cal-dot';
-    var entry = null;
-    for (var j = 0; j < history.length; j++) {
-      if (history[j].date === date) { entry = history[j]; break; }
-    }
+    var entry = byDate[date];
     if (!entry) {
       dot.classList.add('cal-empty');
     } else if (entry.score >= GOOD_DAY_THRESHOLD) {
@@ -189,7 +181,7 @@ function renderCalendar() {
     }
     dot.title = date + (entry ? ': ' + Math.round(entry.score) + '%' : '');
     dotsEl.appendChild(dot);
-  });
+  }
 }
 
 function updateProgressUI() {
@@ -280,22 +272,15 @@ function renderShop() {
       var btn = document.createElement('button');
       btn.className = 'shop-btn';
 
-      if (isOwned && isActive) {
-        btn.className += ' shop-btn--unequip';
-        btn.textContent = cat.type === 'accessory' ? 'Ablegen' : 'Aktiv ✓';
-        btn.onclick = (function(id, t) { return function() {
-          if (t === 'background') selectBackground(id);
-          else if (t === 'palette') selectPalette(id);
-          else toggleItem(id);
-        }; })(item.id, cat.type);
-      } else if (isOwned && !isActive) {
-        btn.className += ' shop-btn--equip';
-        btn.textContent = cat.type === 'accessory' ? 'Anlegen' : 'Aktivieren';
-        btn.onclick = (function(id, t) { return function() {
-          if (t === 'background') selectBackground(id);
-          else if (t === 'palette') selectPalette(id);
-          else toggleItem(id);
-        }; })(item.id, cat.type);
+      if (isOwned) {
+        if (isActive) {
+          btn.className += ' shop-btn--unequip';
+          btn.textContent = cat.type === 'accessory' ? 'Ablegen' : 'Aktiv ✓';
+        } else {
+          btn.className += ' shop-btn--equip';
+          btn.textContent = cat.type === 'accessory' ? 'Anlegen' : 'Aktivieren';
+        }
+        btn.onclick = (function(id, t) { return function() { applyItem(id, t); }; })(item.id, cat.type);
       } else if (coins >= item.cost) {
         btn.className += ' shop-btn--buy';
         btn.textContent = 'Kaufen ' + item.cost + ' 💰';

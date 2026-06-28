@@ -540,7 +540,6 @@ footer { margin-top: 14px; font-size: clamp(0.32rem, 1.4vw, 0.42rem); color: #5a
 }
 .shop-item.equipped { border-color: var(--accent3); box-shadow: 0 0 6px rgba(255,230,109,0.3); }
 .shop-item-name { font-size: clamp(0.35rem, 1.6vw, 0.48rem); color: #e0d0ff; flex: 1; }
-.shop-item-desc { font-size: clamp(0.28rem, 1.2vw, 0.36rem); color: #7a5a9a; flex: 1; display: none; }
 .shop-btn {
   font-family: var(--pixel);
   font-size: clamp(0.28rem, 1.2vw, 0.36rem);

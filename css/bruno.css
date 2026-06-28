@@ -360,8 +360,6 @@
 .bruno-wrap.stage-4 { transform: scale(1.12); }
 .bruno-wrap.stage-5 { transform: scale(1.22); }
 
-.bruno { margin-bottom: 30px; }
-
 /* Stage body color overrides */
 .bruno-wrap.stage-1 .body, .bruno-wrap.stage-1 .head, .bruno-wrap.stage-1 .ear,
 .bruno-wrap.stage-1 .leg,  .bruno-wrap.stage-1 .arm,  .bruno-wrap.stage-1 .tail {
@@ -434,3 +432,32 @@
   background: #5a3880; border-color: #2a1a50;
 }
 .bruno-wrap.palette-dark { filter: drop-shadow(0 0 10px rgba(120,60,200,0.6)); }
+
+/* ── Sprite skin overlay (aktiviert via BRUNO_SKINS in assets.js) ── */
+.bruno-skin-img {
+  display: none;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -46%);
+  width: 96px; height: 96px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 6;
+  pointer-events: none;
+}
+.bruno-skin-img.flip       { transform: translate(-50%, -46%) scaleX(-1); }
+.bruno.has-skin .bruno-skin-img { display: block; }
+.bruno.has-skin .head,
+.bruno.has-skin .body,
+.bruno.has-skin .arm,
+.bruno.has-skin .leg,
+.bruno.has-skin .tail        { display: none; }
+
+/* Mission: Bruno läuft rechts raus und kommt links wieder zurück */
+@keyframes mission-walk {
+  0%   { transform: translateX(0);    }
+  42%  { transform: translateX(60px); }
+  58%  { transform: translateX(60px); }
+  100% { transform: translateX(0);    }
+}
+.bruno.on-mission { animation: mission-walk 3s ease-in-out forwards !important; }
