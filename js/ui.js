@@ -72,6 +72,7 @@ function updatePetState() {
   $('genInfo').textContent = `Generation ${state.generation} · ${formatAge(state.age)}`;
 
   applyStageClass(state.stage);
+  syncSkinToMood();
 }
 
 function formatAge(m) {
@@ -209,4 +210,43 @@ function showToast(msg) {
   t.classList.add('show');
   clearTimeout(showToast._t);
   showToast._t = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Sprite skin system ──
+let _missionTimerA = null;
+let _missionTimerB = null;
+let _missionActive = false;
+
+function _applySkin(key) {
+  const img = $('brunoSkinImg');
+  if (!img) return;
+  let src = getBrunoSkin(key);
+  let flip = false;
+  if (!src && key === 'walk-l') { src = getBrunoSkin('walk-r'); flip = !!src; }
+  if (!src) src = getBrunoSkin('idle') || getBrunoSkin('default');
+  if (!src) { brunoEl.classList.remove('has-skin'); return; }
+  img.src = src;
+  img.classList.toggle('flip', flip);
+  brunoEl.classList.add('has-skin');
+}
+
+function syncSkinToMood() {
+  if (_missionActive) return;
+  const mood = getMood();
+  _applySkin(mood === 'happy' || mood === 'phoenix' ? 'happy' : 'idle');
+}
+
+function triggerMissionWalk() {
+  if (!getBrunoSkin('walk-r') && !getBrunoSkin('idle') && !getBrunoSkin('default')) return;
+  clearTimeout(_missionTimerA);
+  clearTimeout(_missionTimerB);
+  _missionActive = true;
+  _applySkin('walk-r');
+  brunoEl.classList.add('on-mission');
+  _missionTimerA = setTimeout(() => { _applySkin('walk-l'); }, 1500);
+  _missionTimerB = setTimeout(() => {
+    brunoEl.classList.remove('on-mission');
+    _missionActive = false;
+    syncSkinToMood();
+  }, 3000);
 }

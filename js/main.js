@@ -52,6 +52,7 @@ function feedAction(type) {
     exerciseAnimTimeout = setTimeout(() => { brunoEl.classList.remove('happy'); updatePetState(); }, 1500);
     spawnSparkles(5);
   }
+  triggerMissionWalk();
   updatePetState();
   updateStatusMsg();
 }
